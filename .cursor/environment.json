@@ -3,14 +3,14 @@
   "install": "npm ci",
   "terminals": [
     {
-      "name": "next-dev",
+      "name": "vite-dev",
       "command": "npm run dev"
     }
   ],
   "ports": [
     {
       "name": "web",
-      "port": 3000
+      "port": 5173
     }
   ]
 }

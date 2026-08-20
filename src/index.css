@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --color-noche: #121212;
+  --color-carbon: #1e1c1a;
+  --color-carbon-elevado: #26231f;
+  --color-borde: #34302a;
+  --color-oro: #d4af37;
+  --color-oro-suave: #c5a880;
+  --color-marfil: #f5f5f0;
+  --color-marfil-tenue: #a9a29a;
+
+  --font-display: "Cinzel", "Cormorant Garamond", serif;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Inter", "Montserrat", system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-noche);
+  color: var(--color-marfil);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Fondo con un sutil halo dorado místico */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(212, 175, 55, 0.08), transparent 70%),
+    radial-gradient(40% 40% at 90% 100%, rgba(197, 168, 128, 0.06), transparent 70%);
+  pointer-events: none;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
