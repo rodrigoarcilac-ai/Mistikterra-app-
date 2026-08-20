@@ -118,7 +118,7 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="mt-6 w-full rounded-full bg-oro px-5 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-noche transition hover:bg-oro-suave"
+            className="mt-6 flex min-h-12 w-full items-center justify-center rounded-full bg-oro px-5 py-3 text-base font-bold uppercase tracking-[0.14em] text-noche transition hover:bg-oro-suave"
           >
             {method === "email" ? "Enviar enlace mágico" : "Enviar código"}
           </button>
@@ -135,7 +135,7 @@ export default function LoginPage() {
                 <span className="text-marfil">{pending.contact}</span>. Ábrelo para
                 entrar.
               </p>
-              <p className="mt-4 rounded-lg border border-dashed border-oro/40 bg-noche p-3 text-xs text-marfil-tenue">
+              <p className="mt-4 rounded-lg border border-dashed border-oro/40 bg-noche p-3 text-sm text-marfil-tenue">
                 Modo demo: el correo real requiere Firebase. Usa el botón para
                 simular la apertura del enlace.
               </p>
@@ -145,7 +145,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => handleVerify(pending.magicToken)}
-                className="mt-5 w-full rounded-full bg-oro px-5 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-noche transition hover:bg-oro-suave"
+                className="mt-5 flex min-h-12 w-full items-center justify-center rounded-full bg-oro px-5 py-3 text-base font-bold uppercase tracking-[0.14em] text-noche transition hover:bg-oro-suave"
               >
                 Abrir enlace mágico
               </button>
@@ -159,9 +159,9 @@ export default function LoginPage() {
                 Enviamos un código de 6 dígitos a{" "}
                 <span className="text-marfil">{pending.contact}</span>.
               </p>
-              <p className="mt-4 rounded-lg border border-dashed border-oro/40 bg-noche p-3 text-xs text-marfil-tenue">
+              <p className="mt-4 rounded-lg border border-dashed border-oro/40 bg-noche p-3 text-sm text-marfil-tenue">
                 Modo demo · tu código es{" "}
-                <span className="font-semibold tracking-[0.3em] text-oro">
+                <span className="text-lg font-bold tracking-[0.3em] text-oro">
                   {pending.code}
                 </span>
               </p>
@@ -183,7 +183,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => handleVerify(code)}
-                className="mt-5 w-full rounded-full bg-oro px-5 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-noche transition hover:bg-oro-suave"
+                className="mt-5 flex min-h-12 w-full items-center justify-center rounded-full bg-oro px-5 py-3 text-base font-bold uppercase tracking-[0.14em] text-noche transition hover:bg-oro-suave"
               >
                 Verificar y entrar
               </button>
@@ -197,7 +197,7 @@ export default function LoginPage() {
               setCode("");
               setError(null);
             }}
-            className="mt-4 w-full text-center text-sm text-marfil-tenue transition hover:text-marfil"
+            className="mt-4 flex min-h-12 w-full items-center justify-center text-center text-base font-medium text-marfil underline underline-offset-4 transition hover:text-oro"
           >
             Usar otro método
           </button>

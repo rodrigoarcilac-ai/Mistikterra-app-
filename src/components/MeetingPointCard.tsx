@@ -27,7 +27,7 @@ export default function MeetingPointCard() {
           {meetingPoint.title}
         </h2>
 
-        <p className="mt-1 text-sm text-marfil-tenue">
+        <p className="mt-1 text-base text-marfil-tenue">
           {formatDate(meetingPoint.datetime)} · {formatTime(meetingPoint.datetime)}
         </p>
 
@@ -40,9 +40,9 @@ export default function MeetingPointCard() {
             📍
           </span>
           <div>
-            <p className="text-marfil">{meetingPoint.address}</p>
+            <p className="text-lg text-marfil">{meetingPoint.address}</p>
             {meetingPoint.note ? (
-              <p className="mt-1 text-sm text-marfil-tenue">{meetingPoint.note}</p>
+              <p className="mt-1 text-base text-marfil-tenue">{meetingPoint.note}</p>
             ) : null}
           </div>
         </div>

@@ -26,16 +26,16 @@ export default function ItineraryList() {
                     src={item.image}
                     alt={`${item.title} — ${item.location}`}
                     loading="lazy"
-                    className="h-40 w-full rounded-xl border border-oro/30 object-cover"
+                    className="h-44 w-full rounded-xl border-2 border-oro/40 object-cover"
                   />
                 ) : null}
                 <div className="p-4">
-                  <p className="font-display text-sm font-semibold tracking-wide text-oro-suave">
+                  <p className="font-display text-base font-semibold tracking-wide text-oro-suave">
                     {formatTime(item.time)}
                   </p>
-                  <p className="mt-0.5 text-lg text-marfil">{item.title}</p>
-                  <p className="text-sm text-marfil-tenue">{item.location}</p>
-                  <p className="mt-1 text-sm text-marfil-tenue">
+                  <p className="mt-0.5 text-xl text-marfil">{item.title}</p>
+                  <p className="text-base text-marfil-tenue">{item.location}</p>
+                  <p className="mt-1 text-base text-marfil-tenue">
                     {item.description}
                   </p>
                 </div>
