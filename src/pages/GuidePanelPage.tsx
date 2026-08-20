@@ -58,8 +58,9 @@ export default function GuidePanelPage() {
 
       {flash ? (
         <p
-          className="rounded-xl border border-oro/40 bg-oro/10 px-4 py-2 text-sm text-oro"
+          className="fixed left-1/2 top-4 z-50 -translate-x-1/2 rounded-full border border-oro/50 bg-carbon-elevado px-5 py-2 text-sm text-oro shadow-xl shadow-black/50"
           role="status"
+          aria-live="polite"
         >
           {flash}
         </p>
