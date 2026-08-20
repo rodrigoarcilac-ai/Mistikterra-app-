@@ -40,8 +40,12 @@ Servicio único (frontend). Comandos estándar en los scripts de `package.json`
   pantalla (etiquetados "Modo demo") para poder completar el acceso. El rol
   (viajero/guía) se elige en el login solo para demo; en producción vendría de
   Firebase custom claims.
-- El estado del viaje es **local a cada dispositivo** (`localStorage`, claves `mt.trip`
-  y `mt.session`). Las acciones de la guía y las del viajero comparten ese estado en la
-  misma sesión del navegador; la sincronización en tiempo real entre dispositivos
-  requiere Firestore (aún no implementado). Para reiniciar los datos, borra esas claves
-  de `localStorage`.
+- El estado del viaje es **local a cada dispositivo** (`localStorage`, claves
+  `mt.trip.v2` y `mt.session`). Las acciones de la guía y las del viajero comparten ese
+  estado en la misma sesión del navegador; la sincronización en tiempo real entre
+  dispositivos requiere Firestore (aún no implementado). Para reiniciar los datos, borra
+  esas claves de `localStorage`. La clave del viaje está **versionada**: si cambias la
+  forma de `Trip` (en `src/lib/types.ts` / `tripData.ts`), sube el sufijo de versión de
+  `TRIP_KEY` en `src/lib/TripProvider.tsx` para forzar el reseed y evitar datos viejos en caché.
+- Las imágenes del hero y de las actividades viven en `public/img/` y se referencian por
+  ruta absoluta (p. ej. `/img/hero-teotihuacan.png`).

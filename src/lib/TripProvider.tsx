@@ -5,7 +5,9 @@ import { createSeedTrip } from "./tripData";
 import type { Alert, AlertLevel, Announcement, Trip } from "./types";
 import { TripContext, type TripContextValue } from "./trip";
 
-const TRIP_KEY = "mt.trip";
+// La versión en la clave fuerza el reseed cuando cambia el esquema del viaje
+// (p. ej. al añadir imágenes o enseñanzas). Súbela si cambias la forma de Trip.
+const TRIP_KEY = "mt.trip.v2";
 
 function loadTrip(): Trip {
   try {
