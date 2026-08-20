@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../lib/auth";
+import { useTrip } from "../lib/trip";
 import AssistanceButton from "./AssistanceButton";
 import OfflineBanner from "./OfflineBanner";
 
@@ -14,7 +15,12 @@ const GUIDE_NAV: NavItem = { to: "/guia", label: "Panel guía", icon: "✦" };
 
 export default function Layout() {
   const { user, logout } = useAuth();
+  const { trip } = useTrip();
   const navItems = user?.role === "guia" ? [...BASE_NAV, GUIDE_NAV] : BASE_NAV;
+
+  const whatsappHref = `https://wa.me/${trip.assistance.whatsapp}?text=${encodeURIComponent(
+    trip.assistance.whatsappMessage,
+  )}`;
 
   return (
     <div className="mx-auto flex min-h-screen max-w-2xl flex-col">
@@ -25,27 +31,38 @@ export default function Layout() {
           <p className="font-display text-lg font-semibold tracking-[0.3em] text-oro">
             MISTIKTERRA
           </p>
-          <p className="text-[10px] uppercase tracking-[0.35em] text-marfil-tenue">
+          <p className="text-[10px] uppercase tracking-[0.25em] text-oro/90">
             Awakening Experiences
           </p>
         </div>
-        {user ? (
-          <div className="flex items-center gap-3">
-            <div className="text-right">
-              <p className="text-sm text-marfil">{user.name}</p>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-marfil-tenue">
-                {user.role === "guia" ? "Anfitriona" : "Viajer@"}
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={logout}
-              className="rounded-full border border-borde px-3 py-1.5 text-xs text-marfil-tenue transition hover:border-oro/50 hover:text-oro"
-            >
-              Salir
-            </button>
-          </div>
-        ) : null}
+        <div className="flex items-center gap-3">
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Asistencia por WhatsApp"
+            className="flex h-11 min-h-11 w-11 items-center justify-center rounded-full border border-oro/50 text-lg text-oro transition hover:bg-oro/10"
+          >
+            <span aria-hidden>🟢</span>
+          </a>
+          {user ? (
+            <>
+              <div className="text-right">
+                <p className="text-sm text-marfil">{user.name}</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-marfil-tenue">
+                  {user.role === "guia" ? "Anfitriona" : "Viajer@"}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={logout}
+                className="rounded-full border border-borde px-3 py-1.5 text-xs text-marfil-tenue transition hover:border-oro/50 hover:text-oro"
+              >
+                Salir
+              </button>
+            </>
+          ) : null}
+        </div>
       </header>
 
       <main className="flex-1 px-5 pb-28">

@@ -52,9 +52,9 @@ export default function MeetingPointCard() {
             href={meetingPoint.mapUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 rounded-full border border-oro/50 px-5 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-oro transition hover:bg-oro/10"
+            className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-oro px-5 py-3 text-base font-bold uppercase tracking-[0.1em] text-noche shadow-lg shadow-black/30 transition hover:bg-oro-suave focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oro"
           >
-            Abrir mapa
+            <span aria-hidden>🧭</span> Cómo llegar / Ver en mapa
           </a>
           <button
             type="button"
@@ -62,8 +62,8 @@ export default function MeetingPointCard() {
             aria-pressed={confirmed}
             className={
               confirmed
-                ? "flex items-center justify-center gap-2 rounded-full bg-oro/20 px-5 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-oro ring-1 ring-inset ring-oro/60 transition"
-                : "flex items-center justify-center gap-2 rounded-full bg-oro px-5 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-noche transition hover:bg-oro-suave"
+                ? "flex min-h-12 items-center justify-center gap-2 rounded-full bg-oro/15 px-5 py-3 text-base font-bold uppercase tracking-[0.1em] text-oro ring-2 ring-inset ring-oro/70 transition"
+                : "flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-oro px-5 py-3 text-base font-bold uppercase tracking-[0.1em] text-oro transition hover:bg-oro/10"
             }
           >
             {confirmed ? "Asistencia confirmada ✓" : "Confirmar asistencia"}

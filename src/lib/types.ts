@@ -25,6 +25,15 @@ export type ItineraryItem = {
   title: string;
   location: string;
   description: string;
+  /** Miniatura fotográfica opcional del sitio a visitar. */
+  image?: string;
+};
+
+export type Teaching = {
+  title: string;
+  body: string;
+  /** Maestro/asesor de Mistikterra al que se atribuye la enseñanza. */
+  author?: string;
 };
 
 export type ItineraryDay = {
@@ -32,6 +41,8 @@ export type ItineraryDay = {
   date: string;
   label: string;
   items: ItineraryItem[];
+  /** Enseñanza o clave simbólica del día (turismo espiritual). */
+  teaching?: Teaching;
 };
 
 export type AlertLevel = "info" | "importante" | "urgente";
@@ -54,12 +65,18 @@ export type Assistance = {
   contactName: string;
   phone: string;
   whatsapp: string;
+  email: string;
+  whatsappMessage: string;
 };
 
 export type Trip = {
   id: string;
   name: string;
   location: string;
+  /** Lema/temática del destino (alineado con mistikterra.com). */
+  tagline: string;
+  /** Imagen hero del destino actual. */
+  heroImage: string;
   meetingPoint: MeetingPoint;
   itinerary: ItineraryDay[];
   alerts: Alert[];
