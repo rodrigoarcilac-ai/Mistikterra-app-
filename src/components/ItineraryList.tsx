@@ -2,7 +2,7 @@ import { formatTime } from "../lib/format";
 import { useTrip } from "../lib/trip";
 import TeachingCard from "./TeachingCard";
 
-export default function ItineraryList() {
+export default function ItineraryList({ compact = false }: { compact?: boolean }) {
   const { trip } = useTrip();
 
   return (
@@ -13,32 +13,42 @@ export default function ItineraryList() {
             {day.label}
           </h3>
 
-          {day.teaching ? <TeachingCard teaching={day.teaching} /> : null}
+          {day.teaching ? (
+            compact ? (
+              <p className="text-base text-marfil-tenue">
+                ✦ {day.teaching.title}
+                {day.teaching.author ? ` · ${day.teaching.author}` : null}
+              </p>
+            ) : (
+              <TeachingCard teaching={day.teaching} />
+            )
+          ) : null}
 
-          <ol className="space-y-4">
+          <ol
+            className={
+              compact
+                ? "divide-y divide-borde border-y border-borde"
+                : "relative ml-2 space-y-6 border-l border-oro/40 pl-6"
+            }
+          >
             {day.items.map((item) => (
-              <li
-                key={item.id}
-                className="overflow-hidden rounded-xl border border-borde bg-carbon"
-              >
-                {item.image ? (
-                  <img
-                    src={item.image}
-                    alt={`${item.title} — ${item.location}`}
-                    loading="lazy"
-                    className="h-44 w-full rounded-xl border-2 border-oro/40 object-cover"
+              <li key={item.id} className={compact ? "py-3" : "relative"}>
+                {compact ? null : (
+                  <span
+                    aria-hidden
+                    className="absolute -left-[1.54rem] top-1.5 h-2.5 w-2.5 rounded-full bg-oro"
                   />
-                ) : null}
-                <div className="p-4">
-                  <p className="font-display text-base font-semibold tracking-wide text-oro-suave">
-                    {formatTime(item.time)}
-                  </p>
-                  <p className="mt-0.5 text-xl text-marfil">{item.title}</p>
-                  <p className="text-base text-marfil-tenue">{item.location}</p>
+                )}
+                <p className="font-display text-base font-semibold tracking-wide text-oro-suave">
+                  {formatTime(item.time)}
+                </p>
+                <p className="mt-0.5 text-xl text-marfil">{item.title}</p>
+                <p className="text-base text-marfil-tenue">{item.location}</p>
+                {compact ? null : (
                   <p className="mt-1 text-base text-marfil-tenue">
                     {item.description}
                   </p>
-                </div>
+                )}
               </li>
             ))}
           </ol>
