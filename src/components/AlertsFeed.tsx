@@ -26,7 +26,7 @@ export default function AlertsFeed() {
 
   return (
     <section aria-label="Alertas prioritarias" className="space-y-3">
-      <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-oro-suave">
+      <h3 className="text-sm font-semibold uppercase tracking-[0.24em] text-oro-suave">
         Alertas
       </h3>
       {trip.alerts.map((alert) => (
@@ -36,16 +36,16 @@ export default function AlertsFeed() {
           role="alert"
         >
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-oro-suave">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-oro-suave">
               {LEVEL_LABEL[alert.level]} · {formatTime(alert.createdAt)}
             </p>
-            <p className="mt-1">{alert.message}</p>
+            <p className="mt-1 text-base">{alert.message}</p>
           </div>
           {isGuide ? (
             <button
               type="button"
               onClick={() => dismissAlert(alert.id)}
-              className="shrink-0 rounded-full px-2 text-marfil-tenue transition hover:text-marfil"
+              className="flex min-h-12 min-w-12 shrink-0 items-center justify-center rounded-full text-marfil-tenue transition hover:text-marfil"
               aria-label="Descartar alerta"
             >
               ✕

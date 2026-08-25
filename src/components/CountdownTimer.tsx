@@ -42,7 +42,7 @@ export default function CountdownTimer({
 
   return (
     <div
-      className="relative mx-auto aspect-square w-52 max-w-full"
+      className="relative mx-auto aspect-square w-44 max-w-full sm:w-52"
       role="timer"
       aria-label={
         countdown.past
@@ -65,7 +65,7 @@ export default function CountdownTimer({
           r={RADIUS}
           fill="none"
           strokeWidth="8"
-          style={{ stroke: "var(--color-borde)" }}
+          style={{ stroke: "rgba(245, 245, 240, 0.28)" }}
         />
 
         {/* Progreso (loop dorado) */}
@@ -88,13 +88,13 @@ export default function CountdownTimer({
 
       {/* Contador al centro */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-        <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-marfil-tenue">
+        <span className="text-sm font-semibold uppercase tracking-[0.28em] text-marfil-tenue">
           {countdown.past ? "" : "Faltan"}
         </span>
         <span className="font-display text-3xl font-semibold tabular-nums text-oro sm:text-4xl">
           {primary}
         </span>
-        <span className="mt-1 max-w-[7rem] text-xs leading-tight text-marfil-tenue">
+        <span className="mt-1 max-w-[8rem] text-sm leading-tight text-marfil-tenue">
           {secondary}
         </span>
       </div>

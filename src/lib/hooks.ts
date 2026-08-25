@@ -1,5 +1,21 @@
 import { useEffect, useState } from "react";
 
+/** Header sólido tras cruzar `threshold`. Si `enabled` es false, siempre sólido. */
+export function useScrolled(threshold = 16, enabled = true): boolean {
+  const [scrolled, setScrolled] = useState(
+    () => typeof window !== "undefined" && window.scrollY > 16,
+  );
+
+  useEffect(() => {
+    if (!enabled) return;
+    const onScroll = () => setScrolled(window.scrollY > threshold);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [enabled, threshold]);
+
+  return enabled ? scrolled : true;
+}
+
 export function useOnlineStatus(): boolean {
   const [online, setOnline] = useState<boolean>(() =>
     typeof navigator === "undefined" ? true : navigator.onLine,
