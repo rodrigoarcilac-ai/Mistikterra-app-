@@ -17,81 +17,189 @@ function isoAtDayHour(dayOffset: number, hour: number, minute = 0): string {
  */
 export function createSeedTrip(): Trip {
   return {
-    id: "trip_teotihuacan",
-    name: "Despertar en Teotihuacán",
-    location: "Teotihuacán, México",
-    tagline: "Sabiduría ancestral · Destino sagrado",
-    heroImage: "/img/hero-teotihuacan.png",
+    id: "trip_japon",
+    name: "Despertar en Japón",
+    location: "Kioto · Nara · Monte Koya",
+    tagline: "Camino del kami · Templos y silencio",
+    heroImage: "/img/hero-japon.jpg",
     meetingPoint: {
-      title: "Punto de encuentro — Puerta 1",
-      address: "Zona Arqueológica de Teotihuacán, Puerta 1, Estado de México",
-      mapUrl: "https://maps.google.com/?q=Teotihuacan+Puerta+1",
+      title: "Punto de encuentro — Torii de Fushimi Inari",
+      address:
+        "Fushimi Inari Taisha, Fukakusa Yabunouchicho, Fushimi-ku, Kioto, Japón",
+      mapUrl: "https://maps.google.com/?q=Fushimi+Inari+Taisha+Kyoto",
       datetime: isoInHours(3),
-      note: "Llega 15 minutos antes. La anfitriona portará un rebozo dorado.",
+      note: "Llega 15 minutos antes. La anfitriona portará un pañuelo dorado junto al primer torii.",
     },
     itinerary: [
       {
         id: "day_1",
         date: isoAtDayHour(0, 0),
-        label: "Día 1 — Ascenso y apertura",
+        label: "Día 1 — Apertura en Kioto",
         teaching: {
-          title: "El Sol interior",
-          body: "Cada peldaño de la Pirámide del Sol es un ascenso de la conciencia. Subimos afuera lo que deseamos elevar adentro: sube con intención, no con prisa.",
-          author: "Juan Miguel Zunzunegui · Doctor en Humanidades",
+          title: "El umbral",
+          body: "Cada torii es una puerta. No se cruza con prisa: se cruza con intención. Hoy practicamos dejar atrás lo que no viaja con nosotros.",
+          author: "Mistikterra · Camino del kami",
         },
         items: [
           {
             id: "it_1",
-            time: isoAtDayHour(0, 6, 30),
+            time: isoAtDayHour(0, 7, 0),
             title: "Ceremonia de bienvenida",
-            location: "Puerta 1 — Altar de copal",
+            location: "Fushimi Inari Taisha — primer torii",
             description:
-              "Limpia con copal y palabra de intención para abrir la jornada.",
-            image: "/img/it-ceremonia.png",
+              "Palabra de intención y apertura del viaje. Nos reconocemos como grupo.",
           },
           {
             id: "it_2",
-            time: isoAtDayHour(0, 8, 0),
-            title: "Ascenso a la Pirámide del Sol",
-            location: "Calzada de los Muertos",
-            description: "Caminata guiada con paradas de respiración consciente.",
-            image: "/img/it-piramide-sol.png",
+            time: isoAtDayHour(0, 8, 30),
+            title: "Ascenso entre los mil torii",
+            location: "Sendero sagrado de Fushimi Inari",
+            description:
+              "Caminata consciente por el bosque de puertas bermellón, con pausas de respiración.",
           },
           {
             id: "it_3",
             time: isoAtDayHour(0, 13, 0),
-            title: "Comida consciente",
-            location: "La Gruta",
-            description: "Menú prehispánico en cueva. Opciones vegetarianas.",
-            image: "/img/it-gruta.png",
+            title: "Almuerzo shojin",
+            location: "Kioto — cocina de templo",
+            description:
+              "Menú vegetariano de origen budista. Comer en silencio los primeros diez minutos.",
           },
         ],
       },
       {
         id: "day_2",
         date: isoAtDayHour(1, 0),
-        label: "Día 2 — Luna y cierre",
+        label: "Día 2 — Agua y contemplación",
         teaching: {
-          title: "La Luna y el silencio",
-          body: "La Luna no emite luz propia: refleja. El día de cierre practicamos la receptividad: escuchar más, hablar menos, y dejar que la experiencia se integre en silencio.",
-          author: "Israel Lifshitz · Instituto Nitartha",
+          title: "El agua recuerda",
+          body: "En Kiyomizu el agua no se toma: se recibe. Elegir un chorro es elegir una cualidad a cultivar el resto del viaje.",
+          author: "Mistikterra · Camino del kami",
         },
         items: [
           {
             id: "it_4",
-            time: isoAtDayHour(1, 7, 0),
+            time: isoAtDayHour(1, 6, 30),
             title: "Meditación al amanecer",
-            location: "Pirámide de la Luna",
-            description: "Práctica de silencio y agradecimiento.",
-            image: "/img/it-piramide-luna.png",
+            location: "Kiyomizu-dera",
+            description:
+              "Práctica breve frente al valle. Llegamos antes de la afluencia turística.",
           },
           {
             id: "it_5",
-            time: isoAtDayHour(1, 11, 0),
+            time: isoAtDayHour(1, 10, 0),
+            title: "Bosque de bambú",
+            location: "Arashiyama",
+            description:
+              "Caminata en silencio. El bambú enseña flexibilidad sin perder el centro.",
+          },
+          {
+            id: "it_6",
+            time: isoAtDayHour(1, 16, 0),
+            title: "Ceremonia del té",
+            location: "Casa de té tradicional, Kioto",
+            description:
+              "Chado: atención plena en cada gesto. Vestimenta cómoda y calcetines limpios.",
+          },
+        ],
+      },
+      {
+        id: "day_3",
+        date: isoAtDayHour(2, 0),
+        label: "Día 3 — Nara, tierra del Buda",
+        teaching: {
+          title: "La mansedumbre",
+          body: "Los ciervos de Nara no se conquistan. Se espera. Hoy la enseñanza es no forzar el encuentro: lo sagrado se acerca cuando hay calma.",
+          author: "Mistikterra · Camino del kami",
+        },
+        items: [
+          {
+            id: "it_7",
+            time: isoAtDayHour(2, 8, 0),
+            title: "Gran Buda de Todai-ji",
+            location: "Todai-ji, Nara",
+            description:
+              "Visita contemplativa al Daibutsu. Tiempo para sentarse y observar, no solo fotografiar.",
+          },
+          {
+            id: "it_8",
+            time: isoAtDayHour(2, 11, 30),
+            title: "Bosque sagrado de Kasuga",
+            location: "Santuario Kasuga Taisha",
+            description:
+              "Caminata entre linternas de piedra y cedros. Ritmo lento, sin auriculares.",
+          },
+          {
+            id: "it_9",
+            time: isoAtDayHour(2, 16, 0),
+            title: "Círculo de gratitud",
+            location: "Parque de Nara",
+            description:
+              "Cierre del día en el prado. Compartimos una palabra de lo que se suavizó.",
+          },
+        ],
+      },
+      {
+        id: "day_4",
+        date: isoAtDayHour(3, 0),
+        label: "Día 4 — Monte Koya",
+        teaching: {
+          title: "La montaña interior",
+          body: "Koya no es un destino: es un descenso hacia el silencio. Okunoin nos recuerda que los que fueron siguen acompañando el camino.",
+          author: "Mistikterra · Camino del kami",
+        },
+        items: [
+          {
+            id: "it_10",
+            time: isoAtDayHour(3, 7, 0),
+            title: "Viaje a Monte Koya",
+            location: "Tren y funicular hacia Koyasan",
+            description:
+              "Traslados coordinados por la anfitriona. Equipaje ligero; la noche es en templo.",
+          },
+          {
+            id: "it_11",
+            time: isoAtDayHour(3, 14, 0),
+            title: "Caminata por Okunoin",
+            location: "Cementerio sagrado de Koyasan",
+            description:
+              "Recorrido entre cedros milenarios hasta el mausoleo de Kobo Daishi.",
+          },
+          {
+            id: "it_12",
+            time: isoAtDayHour(3, 19, 0),
+            title: "Cena shojin y retiro",
+            location: "Shukubo (alojamiento en templo)",
+            description:
+              "Cena de templo, baño y silencio nocturno. Apagamos pantallas a las 21:00.",
+          },
+        ],
+      },
+      {
+        id: "day_5",
+        date: isoAtDayHour(4, 0),
+        label: "Día 5 — Sutras y cierre",
+        teaching: {
+          title: "Integrar, no acumular",
+          body: "El viaje no se guarda en fotos. Se guarda en el cuerpo. Hoy dejamos que lo vivido se asiente antes de volver al ruido.",
+          author: "Mistikterra · Camino del kami",
+        },
+        items: [
+          {
+            id: "it_13",
+            time: isoAtDayHour(4, 5, 30),
+            title: "Sutras del amanecer",
+            location: "Sala principal del templo",
+            description:
+              "Canto matutino con los monjes. Participación en silencio o con la voz, según indique el guía del templo.",
+          },
+          {
+            id: "it_14",
+            time: isoAtDayHour(4, 11, 0),
             title: "Círculo de cierre",
-            location: "Palacio de Quetzalpapálotl",
-            description: "Integración de la experiencia y entrega de obsequio.",
-            image: "/img/it-cierre.png",
+            location: "Monte Koya",
+            description:
+              "Integración de la experiencia, agradecimiento y despedida del grupo.",
           },
         ],
       },
@@ -100,8 +208,8 @@ export function createSeedTrip(): Trip {
     announcements: [
       {
         id: "ann_1",
-        title: "Bienvenida a Mistikterra",
-        body: "Tu experiencia comienza pronto. Mantén la app a la mano para novedades del itinerario.",
+        title: "Bienvenida a Japón",
+        body: "Tu experiencia en Kioto comienza pronto. Mantén la app a la mano para el punto de encuentro y cambios de itinerario.",
         createdAt: isoInHours(-2),
       },
     ],

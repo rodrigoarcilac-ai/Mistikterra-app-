@@ -36,7 +36,7 @@ export default function DestinationImageFinder({
           onKeyDown={(event) => {
             if (event.key === "Enter") handleSearch();
           }}
-          placeholder="Nombre del destino (ej. Hagia Sophia, Teotihuacán…)"
+          placeholder="Nombre del destino (ej. Kioto, Fushimi Inari, Teotihuacán…)"
           className="min-h-12 flex-1 rounded-lg border border-borde bg-noche px-3.5 py-2.5 text-marfil outline-none transition focus:border-oro"
         />
         <button

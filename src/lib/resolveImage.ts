@@ -27,6 +27,12 @@ const CURATED: Record<string, string> = {
   "la gruta": "/img/it-gruta.png",
   "palacio de quetzalpapalotl": "/img/it-cierre.png",
   "altar de copal": "/img/it-ceremonia.png",
+  kioto: "/img/hero-japon.jpg",
+  kyoto: "/img/hero-japon.jpg",
+  japon: "/img/hero-japon.jpg",
+  "fushimi inari": "/img/hero-japon.jpg",
+  koyasan: "/img/hero-japon.jpg",
+  "monte koya": "/img/hero-japon.jpg",
 };
 
 function findCurated(name: string): string | undefined {
