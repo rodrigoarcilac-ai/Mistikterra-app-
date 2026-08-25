@@ -62,6 +62,10 @@ export function TripProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  const updateHeroImage = useCallback((url: string) => {
+    setTrip((prev) => ({ ...prev, heroImage: url }));
+  }, []);
+
   const emitAlert = useCallback(
     (input: { message: string; level: AlertLevel }): Alert => {
       const alert: Alert = {
@@ -108,6 +112,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
       isConfirmed,
       toggleConfirmation,
       updateMeetingLocation,
+      updateHeroImage,
       emitAlert,
       postAnnouncement,
       dismissAlert,
@@ -118,6 +123,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
       isConfirmed,
       toggleConfirmation,
       updateMeetingLocation,
+      updateHeroImage,
       emitAlert,
       postAnnouncement,
       dismissAlert,

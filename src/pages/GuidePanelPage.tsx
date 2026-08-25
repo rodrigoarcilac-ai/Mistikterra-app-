@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AlertsFeed from "../components/AlertsFeed";
+import DestinationImageFinder from "../components/DestinationImageFinder";
 import { useTrip } from "../lib/trip";
 import type { AlertLevel } from "../lib/types";
 
@@ -123,6 +124,13 @@ export default function GuidePanelPage() {
             </button>
           </div>
         </div>
+      </Panel>
+
+      <Panel
+        title="Portada del destino (imagen automática)"
+        description="Escribe el nombre del lugar y la imagen se selecciona sola."
+      >
+        <DestinationImageFinder onApplied={notify} />
       </Panel>
 
       <Panel
