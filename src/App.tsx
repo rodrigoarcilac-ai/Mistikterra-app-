@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import ItineraryPage from "./pages/ItineraryPage";
+import ExplorePage from "./pages/ExplorePage";
 import GuidePanelPage from "./pages/GuidePanelPage";
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -43,6 +44,7 @@ function AppRoutes() {
       >
         <Route path="/" element={<HomePage />} />
         <Route path="/itinerario" element={<ItineraryPage />} />
+        <Route path="/cerca" element={<ExplorePage />} />
         <Route
           path="/guia"
           element={

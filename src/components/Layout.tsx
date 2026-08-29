@@ -11,9 +11,10 @@ type NavItem = { to: string; label: string; icon: string };
 const BASE_NAV: NavItem[] = [
   { to: "/", label: "Inicio", icon: "◈" },
   { to: "/itinerario", label: "Itinerario", icon: "☰" },
+  { to: "/cerca", label: "Cerca", icon: "◎" },
 ];
 
-const GUIDE_NAV: NavItem = { to: "/guia", label: "Panel guía", icon: "✦" };
+const GUIDE_NAV: NavItem = { to: "/guia", label: "Guía", icon: "✦" };
 
 export default function Layout() {
   const { user, logout } = useAuth();

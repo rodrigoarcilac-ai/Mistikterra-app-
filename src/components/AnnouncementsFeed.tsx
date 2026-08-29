@@ -22,11 +22,11 @@ export default function AnnouncementsFeed() {
             <h4 className="font-display text-lg text-marfil">
               {announcement.title}
             </h4>
-            <span className="shrink-0 text-xs text-marfil-tenue">
+            <span className="shrink-0 text-base text-marfil-tenue">
               {formatTime(announcement.createdAt)}
             </span>
           </div>
-          <p className="mt-1 text-sm text-marfil-tenue">{announcement.body}</p>
+          <p className="mt-1 text-base text-marfil-tenue">{announcement.body}</p>
         </article>
       ))}
     </section>

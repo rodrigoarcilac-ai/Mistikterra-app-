@@ -1,12 +1,19 @@
 import { useAuth } from "../lib/auth";
 import { useTrip } from "../lib/trip";
+import { filterRecommendations } from "../lib/places";
 import AlertsFeed from "../components/AlertsFeed";
+import AnnouncementsFeed from "../components/AnnouncementsFeed";
 import ItineraryList from "../components/ItineraryList";
 import MeetingPointCard from "../components/MeetingPointCard";
+import NearbyPlaces from "../components/NearbyPlaces";
 
 export default function HomePage() {
   const { user } = useAuth();
   const { trip } = useTrip();
+  const nearbyPreview = filterRecommendations(trip.recommendations, {
+    zone: "Kioto",
+    limit: 3,
+  });
 
   return (
     <div>
@@ -37,8 +44,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="px-5 py-6">
+      <div className="space-y-8 px-5 py-6">
         <AlertsFeed />
+        <AnnouncementsFeed />
+        <NearbyPlaces
+          places={nearbyPreview}
+          heading="Cerca, en Kioto"
+          action={{ to: "/cerca", label: "Ver todos" }}
+        />
       </div>
 
       <section className="px-5 pb-10" aria-label="Itinerario del viaje">

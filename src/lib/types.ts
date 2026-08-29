@@ -69,6 +69,26 @@ export type Assistance = {
   whatsappMessage: string;
 };
 
+/** Lugares para tiempos libres cerca de cada jornada. */
+export type PlaceCategory =
+  | "sagrado"
+  | "mirador"
+  | "gastronomia"
+  | "tienda"
+  | "barrio";
+
+export type Recommendation = {
+  id: string;
+  name: string;
+  category: PlaceCategory;
+  /** Ciudad o etapa del viaje (Kioto, Nara, Monte Koya…). */
+  zone: string;
+  area: string;
+  summary: string;
+  mapUrl: string;
+  nearDayId?: string;
+};
+
 export type Trip = {
   id: string;
   name: string;
@@ -79,6 +99,7 @@ export type Trip = {
   heroImage: string;
   meetingPoint: MeetingPoint;
   itinerary: ItineraryDay[];
+  recommendations: Recommendation[];
   alerts: Alert[];
   announcements: Announcement[];
   assistance: Assistance;
