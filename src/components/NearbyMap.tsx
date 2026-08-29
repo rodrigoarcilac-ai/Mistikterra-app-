@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "@maplibre/maplibre-gl-leaflet";
+import "../lib/maplibreWorker";
 import { hasCoords, type LatLng } from "../lib/places";
 import { fetchSpanishDarkStyle } from "../lib/mapStyle";
 import type { Recommendation } from "../lib/types";
