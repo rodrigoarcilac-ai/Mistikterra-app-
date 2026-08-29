@@ -10,10 +10,10 @@ export default function MeetingPointCard() {
   const confirmed = user ? isConfirmed(user.id) : false;
 
   return (
-    <section className="mt-5" aria-labelledby="meeting-title">
+    <section className="mt-3" aria-labelledby="meeting-title">
       <CountdownTimer targetIso={meetingPoint.datetime} />
 
-      <p className="mt-4 text-xs font-semibold uppercase tracking-[0.28em] text-oro">
+      <p className="mt-3 text-xs font-semibold uppercase tracking-[0.28em] text-oro">
         Punto de encuentro activo
       </p>
       <h2
