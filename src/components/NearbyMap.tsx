@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
+import "@maplibre/maplibre-gl-leaflet";
 import { hasCoords, type LatLng } from "../lib/places";
+import { fetchSpanishDarkStyle } from "../lib/mapStyle";
 import type { Recommendation } from "../lib/types";
 
 type NearbyMapProps = {
@@ -39,15 +41,40 @@ export default function NearbyMap({
     if (!node || mapRef.current) return;
 
     const map = L.map(node, {
-      zoomControl: true,
+      zoomControl: false,
       attributionControl: true,
       scrollWheelZoom: false,
     });
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "&copy; OpenStreetMap",
-      className: "mt-map-tiles",
-      maxZoom: 19,
-    }).addTo(map);
+    map.attributionControl.setPrefix(false);
+    map.attributionControl.addAttribution(
+      '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · OpenFreeMap',
+    );
+    L.control
+      .zoom({
+        position: "topleft",
+        zoomInTitle: "Acercar",
+        zoomOutTitle: "Alejar",
+      })
+      .addTo(map);
+
+    const controller = new AbortController();
+    void fetchSpanishDarkStyle(controller.signal)
+      .then((style) => {
+        if (controller.signal.aborted || !mapRef.current) return;
+        L.maplibreGL({
+          style,
+          attributionControl: false,
+        }).addTo(map);
+        map.invalidateSize();
+      })
+      .catch(() => {
+        if (controller.signal.aborted || !mapRef.current) return;
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "&copy; OpenStreetMap",
+          className: "mt-map-tiles",
+          maxZoom: 19,
+        }).addTo(map);
+      });
 
     mapRef.current = map;
     layersRef.current = L.layerGroup().addTo(map);
@@ -57,6 +84,7 @@ export default function NearbyMap({
     window.setTimeout(onResize, 80);
 
     return () => {
+      controller.abort();
       window.removeEventListener("resize", onResize);
       map.remove();
       mapRef.current = null;
@@ -135,8 +163,9 @@ export default function NearbyMap({
         <div
           ref={containerRef}
           className="h-72 w-full sm:h-80"
+          lang="es"
           role="application"
-          aria-label="Mapa de lugares cercanos"
+          aria-label="Mapa de lugares cercanos en español"
         />
       </div>
       <figcaption className="flex flex-wrap gap-x-4 gap-y-1 px-4 py-2 text-xs text-marfil-tenue">

@@ -1,5 +1,6 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import type { ReactNode } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./lib/AuthProvider";
 import { TripProvider } from "./lib/TripProvider";
 import { useAuth } from "./lib/auth";
@@ -7,8 +8,17 @@ import Layout from "./components/Layout";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import ItineraryPage from "./pages/ItineraryPage";
-import ExplorePage from "./pages/ExplorePage";
 import GuidePanelPage from "./pages/GuidePanelPage";
+
+const ExplorePage = lazy(() => import("./pages/ExplorePage"));
+
+function CercaFallback() {
+  return (
+    <p className="text-base text-marfil-tenue" role="status">
+      Cargando el mapa…
+    </p>
+  );
+}
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { user } = useAuth();
@@ -44,7 +54,14 @@ function AppRoutes() {
       >
         <Route path="/" element={<HomePage />} />
         <Route path="/itinerario" element={<ItineraryPage />} />
-        <Route path="/cerca" element={<ExplorePage />} />
+        <Route
+          path="/cerca"
+          element={
+            <Suspense fallback={<CercaFallback />}>
+              <ExplorePage />
+            </Suspense>
+          }
+        />
         <Route
           path="/guia"
           element={
