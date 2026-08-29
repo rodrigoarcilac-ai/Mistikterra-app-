@@ -18,7 +18,7 @@ export default function HomePage() {
   return (
     <div>
       <section
-        className="relative min-h-[100dvh] overflow-hidden"
+        className="relative min-h-[100dvh]"
         aria-label={`Destino: ${trip.name}`}
       >
         <img

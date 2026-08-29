@@ -10,10 +10,8 @@ export default function MeetingPointCard() {
   const confirmed = user ? isConfirmed(user.id) : false;
 
   return (
-    <section className="mt-3" aria-labelledby="meeting-title">
-      <CountdownTimer targetIso={meetingPoint.datetime} />
-
-      <p className="mt-3 text-xs font-semibold uppercase tracking-[0.28em] text-oro">
+    <section className="mt-8" aria-labelledby="meeting-title">
+      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-oro">
         Punto de encuentro activo
       </p>
       <h2
@@ -25,7 +23,10 @@ export default function MeetingPointCard() {
       <p className="mt-1 text-base text-marfil-tenue">
         {formatDate(meetingPoint.datetime)} · {formatTime(meetingPoint.datetime)}
       </p>
-      <p className="mt-3 text-lg text-marfil">
+
+      <CountdownTimer targetIso={meetingPoint.datetime} />
+
+      <p className="mt-5 text-lg text-marfil">
         <span aria-hidden>📍 </span>
         {meetingPoint.address}
       </p>
