@@ -7,7 +7,7 @@ import { TripContext, type TripContextValue } from "./trip";
 
 // La versión en la clave fuerza el reseed cuando cambia el esquema del viaje
 // (p. ej. al añadir imágenes o enseñanzas). Súbela si cambias la forma de Trip.
-const TRIP_KEY = "mt.trip.v4";
+const TRIP_KEY = "mt.trip.v5";
 
 function loadTrip(): Trip {
   try {

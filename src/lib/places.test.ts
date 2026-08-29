@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { filterRecommendations, zonesFrom } from "./places";
+import {
+  filterRecommendations,
+  distanceMeters,
+  originForZone,
+  sortByNearest,
+  zonesFrom,
+} from "./places";
 import { createSeedTrip } from "./tripData";
 
 describe("recommendations", () => {
@@ -18,6 +24,11 @@ describe("recommendations", () => {
     expect(recommendations.every((place) => place.mapUrl.includes("maps"))).toBe(
       true,
     );
+    expect(
+      recommendations.every(
+        (place) => Number.isFinite(place.lat) && Number.isFinite(place.lng),
+      ),
+    ).toBe(true);
   });
 
   it("filters by zone and category", () => {
@@ -28,5 +39,23 @@ describe("recommendations", () => {
     });
     expect(kiotoFood.length).toBeGreaterThan(0);
     expect(kiotoFood.every((place) => place.zone === "Kioto")).toBe(true);
+  });
+
+  it("measures zero distance for the same point", () => {
+    const point = { lat: 34.96714, lng: 135.77267 };
+    expect(distanceMeters(point, point)).toBe(0);
+  });
+
+  it("uses the meeting point as Kioto origin and sorts by nearest", () => {
+    const trip = createSeedTrip();
+    const origin = originForZone("Kioto", trip.meetingPoint);
+    expect(origin.lat).toBe(trip.meetingPoint.lat);
+    expect(origin.lng).toBe(trip.meetingPoint.lng);
+
+    const kioto = trip.recommendations.filter((place) => place.zone === "Kioto");
+    const ranked = sortByNearest(kioto, origin);
+    const nearest = distanceMeters(origin, ranked[0]);
+    const farthest = distanceMeters(origin, ranked[ranked.length - 1]);
+    expect(nearest).toBeLessThanOrEqual(farthest);
   });
 });

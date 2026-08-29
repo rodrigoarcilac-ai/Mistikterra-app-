@@ -29,6 +29,8 @@ export function createSeedTrip(): Trip {
       mapUrl: "https://maps.google.com/?q=Fushimi+Inari+Taisha+Kyoto",
       datetime: isoInHours(3),
       note: "Llega 15 minutos antes. La anfitriona portará un pañuelo dorado junto al primer torii.",
+      lat: 34.96714,
+      lng: 135.77267,
     },
     itinerary: [
       {
@@ -223,6 +225,8 @@ export function createSeedTrip(): Trip {
         summary:
           "Paseo junto al agua entre templos. Ideal en un tiempo libre de la tarde, sin prisa.",
         mapUrl: "https://maps.google.com/?q=Philosopher+Path+Kyoto",
+        lat: 35.0264,
+        lng: 135.7958,
         nearDayId: "day_2",
       },
       {
@@ -234,6 +238,8 @@ export function createSeedTrip(): Trip {
         summary:
           "Calle techada de sabores locales. Prueba té, pickles y dulces; evita las horas pico.",
         mapUrl: "https://maps.google.com/?q=Nishiki+Market+Kyoto",
+        lat: 35.005,
+        lng: 135.7648,
         nearDayId: "day_1",
       },
       {
@@ -245,6 +251,8 @@ export function createSeedTrip(): Trip {
         summary:
           "Calles de madera al anochecer. Camina en silencio y respeta la privacidad de las geiko.",
         mapUrl: "https://maps.google.com/?q=Gion+Shirakawa+Kyoto",
+        lat: 35.0037,
+        lng: 135.778,
         nearDayId: "day_1",
       },
       {
@@ -256,6 +264,8 @@ export function createSeedTrip(): Trip {
         summary:
           "Templo cubierto de oro sobre el estanque. Ve temprano si tienes una mañana libre.",
         mapUrl: "https://maps.google.com/?q=Kinkaku-ji+Kyoto",
+        lat: 35.0394,
+        lng: 135.7292,
         nearDayId: "day_2",
       },
       {
@@ -267,6 +277,8 @@ export function createSeedTrip(): Trip {
         summary:
           "Incienso de casa fundada en 1587. Un souvenir sobrio, alineado con la práctica.",
         mapUrl: "https://maps.google.com/?q=Kungyokudo+Kyoto",
+        lat: 34.9915,
+        lng: 135.7516,
         nearDayId: "day_1",
       },
       {
@@ -278,6 +290,8 @@ export function createSeedTrip(): Trip {
         summary:
           "Vista de tejados y montañas al atardecer. Complementa la meditación del Día 2.",
         mapUrl: "https://maps.google.com/?q=Higashiyama+viewpoint+Kyoto",
+        lat: 34.9949,
+        lng: 135.785,
         nearDayId: "day_2",
       },
       {
@@ -289,6 +303,8 @@ export function createSeedTrip(): Trip {
         summary:
           "Casas machiya, patios y tiendas tranquilas. Perfecto después de Todai-ji.",
         mapUrl: "https://maps.google.com/?q=Naramachi+Nara",
+        lat: 34.6775,
+        lng: 135.8305,
         nearDayId: "day_3",
       },
       {
@@ -300,6 +316,8 @@ export function createSeedTrip(): Trip {
         summary:
           "Ascenso suave y panorama de la ciudad. Lleva agua y baja antes del anochecer.",
         mapUrl: "https://maps.google.com/?q=Mount+Wakakusa+Nara",
+        lat: 34.691,
+        lng: 135.8555,
         nearDayId: "day_3",
       },
       {
@@ -311,6 +329,8 @@ export function createSeedTrip(): Trip {
         summary:
           "Mochi de té verde preparado al momento. Una parada breve y memorable.",
         mapUrl: "https://maps.google.com/?q=Nakatanidou+Nara",
+        lat: 34.6818,
+        lng: 135.8304,
         nearDayId: "day_3",
       },
       {
@@ -322,6 +342,8 @@ export function createSeedTrip(): Trip {
         summary:
           "Pagoda y recinto fundacional de Kobo Daishi. Visítalo en un hueco entre prácticas.",
         mapUrl: "https://maps.google.com/?q=Danjo+Garan+Koyasan",
+        lat: 34.2135,
+        lng: 135.5836,
         nearDayId: "day_4",
       },
       {
@@ -333,6 +355,8 @@ export function createSeedTrip(): Trip {
         summary:
           "Jardín de piedra Banryutei y salas de tatami. Ritmo lento, fotos con respeto.",
         mapUrl: "https://maps.google.com/?q=Kongobu-ji+Koyasan",
+        lat: 34.2139,
+        lng: 135.5842,
         nearDayId: "day_4",
       },
       {
@@ -344,6 +368,8 @@ export function createSeedTrip(): Trip {
         summary:
           "Té y cocina de templo para un tiempo libre breve, sin salir de la montaña.",
         mapUrl: "https://maps.google.com/?q=Koyasan+shojin+cafe",
+        lat: 34.212,
+        lng: 135.5865,
         nearDayId: "day_5",
       },
     ],

@@ -47,7 +47,7 @@ export default function AssistanceButton() {
                 rel="noopener noreferrer"
                 className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-oro px-5 py-3 text-sm font-bold uppercase tracking-[0.12em] text-noche transition hover:bg-oro-suave"
               >
-                <span aria-hidden>🟢</span> WhatsApp / SOS
+                <span aria-hidden>💬</span> WhatsApp / SOS
               </a>
               <a
                 href={telHref}

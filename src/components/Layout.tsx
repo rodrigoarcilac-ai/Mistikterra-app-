@@ -58,7 +58,7 @@ export default function Layout() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Asistencia por WhatsApp"
-                className="flex min-h-12 items-center gap-2 rounded-full border border-[#25D366]/70 bg-[#25D366]/15 px-4 py-2 text-sm font-bold text-[#25D366] transition hover:bg-[#25D366]/25"
+                className="flex min-h-12 items-center gap-2 rounded-full border border-oro/40 bg-oro/10 px-4 py-2 text-sm font-semibold text-oro transition hover:bg-oro/20"
               >
                 <span aria-hidden>💬</span>
                 <span className="hidden sm:inline">WhatsApp</span>

@@ -17,6 +17,8 @@ export type MeetingPoint = {
   /** ISO datetime del próximo encuentro. */
   datetime: string;
   note?: string;
+  lat?: number;
+  lng?: number;
 };
 
 export type ItineraryItem = {
@@ -86,6 +88,8 @@ export type Recommendation = {
   area: string;
   summary: string;
   mapUrl: string;
+  lat: number;
+  lng: number;
   nearDayId?: string;
 };
 
