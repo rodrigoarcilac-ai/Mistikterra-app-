@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import type { LatLng } from "../lib/places";
+import { hasCoords, type LatLng } from "../lib/places";
 import type { Recommendation } from "../lib/types";
 
 type NearbyMapProps = {
@@ -18,6 +17,10 @@ function pinIcon(kind: "place" | "selected" | "origin") {
     iconSize: kind === "selected" ? [22, 22] : [16, 16],
     iconAnchor: kind === "selected" ? [11, 11] : [8, 8],
   });
+}
+
+function toLatLng(point: LatLng): L.LatLngExpression {
+  return [point.lat, point.lng];
 }
 
 export default function NearbyMap({
@@ -64,11 +67,14 @@ export default function NearbyMap({
   useEffect(() => {
     const map = mapRef.current;
     const layers = layersRef.current;
-    if (!map || !layers) return;
+    if (!map || !layers || !hasCoords(origin)) return;
 
     layers.clearLayers();
 
-    const originMarker = L.marker([origin.lat, origin.lng], {
+    const mappable = places.filter(hasCoords);
+    const path = (route ?? []).filter(hasCoords);
+
+    const originMarker = L.marker(toLatLng(origin), {
       icon: pinIcon("origin"),
       title: origin.label,
       keyboard: true,
@@ -76,9 +82,9 @@ export default function NearbyMap({
     originMarker.bindTooltip(origin.label, { direction: "top" });
     originMarker.addTo(layers);
 
-    for (const place of places) {
+    for (const place of mappable) {
       const selected = place.id === selectedId;
-      const marker = L.marker([place.lat, place.lng], {
+      const marker = L.marker(toLatLng(place), {
         icon: pinIcon(selected ? "selected" : "place"),
         title: place.name,
         keyboard: true,
@@ -89,35 +95,26 @@ export default function NearbyMap({
       marker.addTo(layers);
     }
 
-    if (route && route.length > 1) {
-      L.polyline(
-        route.map((point) => [point.lat, point.lng] as L.LatLngExpression),
-        {
-          color: "#d4af37",
-          weight: 4,
-          opacity: 0.95,
-          lineJoin: "round",
-          lineCap: "round",
-        },
-      ).addTo(layers);
+    if (path.length > 1) {
+      L.polyline(path.map(toLatLng), {
+        color: "#d4af37",
+        weight: 4,
+        opacity: 0.95,
+        lineJoin: "round",
+        lineCap: "round",
+      }).addTo(layers);
     }
 
-    const selectedPlace = places.find((place) => place.id === selectedId);
-    if (route && route.length > 1) {
-      const bounds = L.latLngBounds(
-        route.map((point) => [point.lat, point.lng] as [number, number]),
-      );
-      bounds.extend([origin.lat, origin.lng]);
-      if (selectedPlace) bounds.extend([selectedPlace.lat, selectedPlace.lng]);
-      map.fitBounds(bounds.pad(0.22));
+    const selectedPlace = mappable.find((place) => place.id === selectedId);
+    const bounds = L.latLngBounds([toLatLng(origin)]);
+    if (path.length > 1) {
+      for (const point of path) bounds.extend(toLatLng(point));
+      if (selectedPlace) bounds.extend(toLatLng(selectedPlace));
     } else {
-      const bounds = L.latLngBounds([
-        [origin.lat, origin.lng],
-        ...places.map((place) => [place.lat, place.lng] as [number, number]),
-      ]);
-      if (bounds.isValid()) {
-        map.fitBounds(bounds.pad(0.18));
-      }
+      for (const place of mappable) bounds.extend(toLatLng(place));
+    }
+    if (bounds.isValid()) {
+      map.fitBounds(bounds.pad(0.22));
     }
     window.setTimeout(() => map.invalidateSize(), 50);
   }, [onSelect, origin, places, route, selectedId]);

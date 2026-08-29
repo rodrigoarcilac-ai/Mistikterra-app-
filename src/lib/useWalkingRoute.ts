@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { distanceMeters, type LatLng } from "./places";
+import { distanceMeters, hasCoords, type LatLng } from "./places";
 import {
   estimateWalkingRoute,
   fetchWalkingRoute,
@@ -14,7 +14,7 @@ export function useWalkingRoute(
   from: LatLng,
   to: LatLng | null,
 ): WalkingRoute | null {
-  const key = to ? routeKey(from, to) : null;
+  const key = to && hasCoords(from) && hasCoords(to) ? routeKey(from, to) : null;
   const [cache, setCache] = useState<Record<string, WalkingRoute>>({});
 
   useEffect(() => {

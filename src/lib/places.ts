@@ -67,38 +67,30 @@ export function formatDistance(meters: number): string {
   return `${(meters / 1000).toFixed(1).replace(".", ",")} km`;
 }
 
+export function hasCoords(point: Partial<LatLng> | null | undefined): point is LatLng {
+  return (
+    !!point &&
+    Number.isFinite(point.lat) &&
+    Number.isFinite(point.lng)
+  );
+}
+
 export function originForZone(
   zone: string,
   meeting: MeetingPoint,
 ): LatLng & { label: string } {
   if (
     (zone === "todos" || zone === "Kioto") &&
-    typeof meeting.lat === "number" &&
-    typeof meeting.lng === "number"
+    hasCoords(meeting)
   ) {
     return { lat: meeting.lat, lng: meeting.lng, label: meeting.title };
   }
-  return (
-    ZONE_ORIGINS[zone] ?? {
-      lat: meeting.lat ?? 34.96714,
-      lng: meeting.lng ?? 135.77267,
-      label: meeting.title,
-    }
-  );
-}
-
-export function originForPlace(
-  place: Recommendation,
-  meeting: MeetingPoint,
-): LatLng & { label: string } {
-  if (
-    place.zone === "Kioto" &&
-    typeof meeting.lat === "number" &&
-    typeof meeting.lng === "number"
-  ) {
+  const fallback = ZONE_ORIGINS[zone];
+  if (fallback) return fallback;
+  if (hasCoords(meeting)) {
     return { lat: meeting.lat, lng: meeting.lng, label: meeting.title };
   }
-  return ZONE_ORIGINS[place.zone] ?? { lat: place.lat, lng: place.lng, label: place.zone };
+  return { lat: 34.96714, lng: 135.77267, label: meeting.title };
 }
 
 export function sortByNearest(

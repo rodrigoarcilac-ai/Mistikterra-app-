@@ -58,4 +58,15 @@ describe("recommendations", () => {
     const farthest = distanceMeters(origin, ranked[ranked.length - 1]);
     expect(nearest).toBeLessThanOrEqual(farthest);
   });
+
+  it("falls back to Fushimi when the meeting point has no coordinates", () => {
+    const origin = originForZone("todos", {
+      title: "Punto",
+      address: "x",
+      mapUrl: "https://maps.google.com/?q=x",
+      datetime: new Date().toISOString(),
+    });
+    expect(origin.lat).toBe(34.96714);
+    expect(origin.lng).toBe(135.77267);
+  });
 });

@@ -6,6 +6,7 @@ import {
   PLACE_CATEGORIES,
   filterRecommendations,
   formatDistance,
+  hasCoords,
   originForZone,
   sortByNearest,
   zonesFrom,
@@ -44,7 +45,7 @@ export default function ExplorePage() {
     const places = filterRecommendations(trip.recommendations, {
       zone: zone === "todos" ? undefined : zone,
       category,
-    });
+    }).filter(hasCoords);
     return sortByNearest(places, origin);
   }, [category, origin, trip.recommendations, zone]);
 
