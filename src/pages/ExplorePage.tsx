@@ -88,8 +88,8 @@ export default function ExplorePage() {
           </div>
         </div>
         <p className="mt-3 text-sm leading-6 text-marfil-tenue">
-          Elige un lugar. El mapa lo resalta y traza la ruta a pie más cercana
-          desde el punto de referencia de la zona.
+          Elige un lugar. Google Maps lo muestra en español y traza la ruta a
+          pie más cercana desde el punto de referencia de la zona.
         </p>
       </div>
 
@@ -99,13 +99,7 @@ export default function ExplorePage() {
         </p>
       ) : (
         <>
-          <NearbyMap
-            places={ranked}
-            selectedId={selected?.id ?? null}
-            origin={origin}
-            route={route?.coordinates ?? null}
-            onSelect={setPickedId}
-          />
+          <NearbyMap origin={origin} destination={selected} />
           {selected ? (
             <p className="text-sm leading-6 text-marfil-tenue">
               {route
