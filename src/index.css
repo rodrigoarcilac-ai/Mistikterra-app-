@@ -150,6 +150,11 @@ body::before {
   font-family: var(--font-sans);
 }
 
+.mt-map-tiles {
+  filter: grayscale(1) invert(1) sepia(0.28) hue-rotate(350deg) saturate(0.55)
+    brightness(0.82);
+}
+
 @media (min-width: 640px) {
   .mt-map-frame .leaflet-container {
     height: 20rem;
