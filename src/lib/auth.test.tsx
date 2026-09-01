@@ -16,7 +16,6 @@ describe("AuthProvider", () => {
       result.current.requestAccess({
         method: "telefono",
         contact: "+525555550123",
-        role: "viajero",
       });
     });
 
@@ -29,6 +28,7 @@ describe("AuthProvider", () => {
     });
 
     expect(result.current.user?.role).toBe("viajero");
+    expect(result.current.user?.name).toBe("Viajero");
     expect(result.current.user?.contact).toBe("+525555550123");
     expect(localStorage.getItem("mt.session")).toContain("+525555550123");
   });
@@ -52,7 +52,7 @@ describe("AuthProvider", () => {
     expect(result.current.user).toBeNull();
   });
 
-  it("logs in a guide via magic link and logs out", () => {
+  it("ignores a self-assigned guide role for a traveler email", () => {
     const { result } = renderHook(() => useAuth(), { wrapper });
 
     act(() => {
@@ -68,8 +68,27 @@ describe("AuthProvider", () => {
       result.current.verify(token!);
     });
 
-    expect(result.current.user?.role).toBe("guia");
+    expect(result.current.user?.role).toBe("viajero");
     expect(result.current.user?.name).toBe("Sofia");
+  });
+
+  it("logs in Gabriela as host via her email and logs out", () => {
+    const { result } = renderHook(() => useAuth(), { wrapper });
+
+    act(() => {
+      result.current.requestAccess({
+        method: "email",
+        contact: "mistikterra01@gmail.com",
+      });
+    });
+
+    const token = result.current.pending?.magicToken;
+    act(() => {
+      result.current.verify(token!);
+    });
+
+    expect(result.current.user?.role).toBe("guia");
+    expect(result.current.user?.name).toBe("Gabriela Calderón");
 
     act(() => {
       result.current.logout();

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BrandLogo from "../components/BrandLogo";
 import { useAuth } from "../lib/auth";
-import type { AuthMethod, Role } from "../lib/types";
+import type { AuthMethod } from "../lib/types";
 
 export default function LoginPage() {
   const { pending, requestAccess, verify, cancelPending } = useAuth();
   const navigate = useNavigate();
 
   const [method, setMethod] = useState<AuthMethod>("email");
-  const [role, setRole] = useState<Role>("viajero");
   const [contact, setContact] = useState("");
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export default function LoginPage() {
       setError("Ingresa un número de teléfono válido.");
       return;
     }
-    requestAccess({ method, contact: trimmed, role });
+    requestAccess({ method, contact: trimmed });
   }
 
   function handleVerify(input: string) {
@@ -41,12 +41,7 @@ export default function LoginPage() {
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6 py-12">
       <div className="text-center">
-        <p className="font-display text-2xl font-semibold tracking-[0.35em] text-oro">
-          MISTIKTERRA
-        </p>
-        <p className="mt-1 text-xs uppercase tracking-[0.4em] text-marfil-tenue">
-          Awakening Experiences
-        </p>
+        <BrandLogo size="login" />
         <h1 className="mt-8 font-display text-3xl text-marfil">
           Tu viaje interior comienza aquí
         </h1>
@@ -66,7 +61,7 @@ export default function LoginPage() {
                 type="button"
                 key={option}
                 onClick={() => setMethod(option)}
-                className={`rounded-full py-2 text-sm font-medium transition ${
+                className={`flex min-h-12 items-center justify-center rounded-full text-sm font-medium transition ${
                   method === option
                     ? "bg-oro text-noche"
                     : "text-marfil-tenue hover:text-marfil"
@@ -90,28 +85,6 @@ export default function LoginPage() {
             />
           </label>
 
-          <fieldset className="mt-5">
-            <legend className="mb-1.5 text-sm text-marfil-tenue">
-              Ingresas como <span className="text-marfil-tenue">(demo)</span>
-            </legend>
-            <div className="grid grid-cols-2 gap-2">
-              {(["viajero", "guia"] as Role[]).map((option) => (
-                <button
-                  type="button"
-                  key={option}
-                  onClick={() => setRole(option)}
-                  className={`rounded-lg border py-2 text-sm transition ${
-                    role === option
-                      ? "border-oro bg-oro/10 text-oro"
-                      : "border-borde text-marfil-tenue hover:text-marfil"
-                  }`}
-                >
-                  {option === "viajero" ? "Viajer@" : "Anfitriona / Guía"}
-                </button>
-              ))}
-            </div>
-          </fieldset>
-
           {error ? (
             <p className="mt-4 text-sm text-red-400">{error}</p>
           ) : null}
@@ -122,6 +95,11 @@ export default function LoginPage() {
           >
             {method === "email" ? "Enviar enlace mágico" : "Enviar código"}
           </button>
+
+          <p className="mt-4 text-center text-xs leading-5 text-marfil-tenue">
+            Simulación local · sin Firebase. El acceso de anfitriona es el de
+            Gabriela Calderón.
+          </p>
         </form>
       ) : (
         <div className="mt-10 rounded-2xl border border-borde bg-carbon p-6">
@@ -135,9 +113,8 @@ export default function LoginPage() {
                 <span className="text-marfil">{pending.contact}</span>. Ábrelo para
                 entrar.
               </p>
-              <p className="mt-4 rounded-lg border border-dashed border-oro/40 bg-noche p-3 text-sm text-marfil-tenue">
-                Modo demo: el correo real requiere Firebase. Usa el botón para
-                simular la apertura del enlace.
+              <p className="mt-4 text-xs leading-5 text-marfil-tenue">
+                Simulación local · sin Firebase. Usa el botón para continuar.
               </p>
               {error ? (
                 <p className="mt-4 text-sm text-red-400">{error}</p>
@@ -159,9 +136,9 @@ export default function LoginPage() {
                 Enviamos un código de 6 dígitos a{" "}
                 <span className="text-marfil">{pending.contact}</span>.
               </p>
-              <p className="mt-4 rounded-lg border border-dashed border-oro/40 bg-noche p-3 text-sm text-marfil-tenue">
-                Modo demo · tu código es{" "}
-                <span className="text-lg font-bold tracking-[0.3em] text-oro">
+              <p className="mt-4 text-xs leading-5 text-marfil-tenue">
+                Simulación local · sin Firebase. Tu código es{" "}
+                <span className="font-bold tracking-[0.2em] text-oro">
                   {pending.code}
                 </span>
               </p>

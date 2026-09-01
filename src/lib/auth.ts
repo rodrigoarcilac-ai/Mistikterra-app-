@@ -4,7 +4,8 @@ import type { AuthMethod, Role, User } from "./types";
 export type LoginRequest = {
   method: AuthMethod;
   contact: string;
-  role: Role;
+  /** Ignorado: el rol lo decide la allowlist de Gabriela Calderón. */
+  role?: Role;
   name?: string;
 };
 

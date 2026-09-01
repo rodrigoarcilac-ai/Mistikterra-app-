@@ -1,6 +1,10 @@
 import { useCallback, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { createId } from "./format";
+import {
+  displayNameForContact,
+  roleForContact,
+} from "./guideAccess";
 import type { User } from "./types";
 import {
   AuthContext,
@@ -25,17 +29,7 @@ function deriveName(request: LoginRequest): string {
   if (request.name && request.name.trim().length > 1) {
     return request.name.trim();
   }
-  if (request.method === "email") {
-    const local = request.contact.split("@")[0] ?? "";
-    const clean = local.replace(/[._-]+/g, " ").trim();
-    if (clean) {
-      return clean
-        .split(" ")
-        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-        .join(" ");
-    }
-  }
-  return request.role === "guia" ? "Anfitriona" : "Viajer@";
+  return displayNameForContact(request.contact, request.method);
 }
 
 function sixDigitCode(): string {
@@ -52,11 +46,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [pending, setPending] = useState<PendingChallenge | null>(null);
 
   const requestAccess = useCallback((request: LoginRequest) => {
+    const contact = request.contact.trim();
     setPending({
       method: request.method,
-      contact: request.contact.trim(),
-      role: request.role,
-      name: deriveName(request),
+      contact,
+      role: roleForContact(contact),
+      name: deriveName({ ...request, contact }),
       code: sixDigitCode(),
       magicToken: createId("magic"),
     });
