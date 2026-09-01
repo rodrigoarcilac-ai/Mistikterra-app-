@@ -5,6 +5,7 @@ import {
   displayNameForContact,
   roleForContact,
 } from "./guideAccess";
+import { clearSessionHero, rotateSessionHero } from "./sessionHero";
 import type { User } from "./types";
 import {
   AuthContext,
@@ -81,6 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         method: pending.method,
       };
       localStorage.setItem(SESSION_KEY, JSON.stringify(authenticated));
+      rotateSessionHero();
       setUser(authenticated);
       setPending(null);
       return { ok: true };
@@ -92,6 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     localStorage.removeItem(SESSION_KEY);
+    clearSessionHero();
     setUser(null);
     setPending(null);
   }, []);

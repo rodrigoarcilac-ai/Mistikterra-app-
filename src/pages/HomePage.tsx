@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../lib/auth";
 import { focusDayHeading, pickFocusDay, zoneForDay } from "../lib/itinerary";
+import { loadSessionHero } from "../lib/sessionHero";
 import { useTrip } from "../lib/trip";
 import AlertsFeed from "../components/AlertsFeed";
 import AnnouncementsFeed from "../components/AnnouncementsFeed";
@@ -10,6 +11,7 @@ import MeetingPointCard from "../components/MeetingPointCard";
 export default function HomePage() {
   const { user } = useAuth();
   const { trip } = useTrip();
+  const hero = loadSessionHero();
   const focusDay = pickFocusDay(trip.itinerary);
   const focusHeading = focusDay ? focusDayHeading(focusDay) : "";
   const freeTimeZone = focusDay ? zoneForDay(focusDay.id) : "Estambul";
@@ -17,25 +19,16 @@ export default function HomePage() {
   return (
     <div>
       <section
-        className="relative overflow-hidden bg-gradient-to-b from-noche via-carbon to-noche"
+        className="relative min-h-[100dvh] overflow-hidden bg-noche"
         aria-label={`Destino: ${trip.name}`}
       >
-        {trip.heroImage ? (
-          <>
-            <img
-              src={trip.heroImage}
-              alt={`${trip.name}, ${trip.location}`}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-noche/80 via-noche/25 to-noche" />
-          </>
-        ) : (
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_50%_at_50%_0%,rgba(212,175,55,0.22),transparent_70%)]"
-          />
-        )}
-        <div className="relative px-5 pb-8 pt-24">
+        <img
+          src={hero.src}
+          alt={hero.alt}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-noche/80 via-noche/40 to-noche" />
+        <div className="relative flex min-h-[100dvh] flex-col justify-end px-5 pb-8 pt-24">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-oro">
             {trip.tagline}
           </p>
