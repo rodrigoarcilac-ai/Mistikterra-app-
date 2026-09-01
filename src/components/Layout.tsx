@@ -2,8 +2,8 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { motion, useReducedMotion } from "motion/react";
 import { useAuth } from "../lib/auth";
 import { useScrolled } from "../lib/hooks";
-import { useTrip } from "../lib/trip";
 import AssistanceButton from "./AssistanceButton";
+import BrandLogo from "./BrandLogo";
 import OfflineBanner from "./OfflineBanner";
 
 type NavItem = { to: string; label: string; icon: string };
@@ -14,21 +14,16 @@ const BASE_NAV: NavItem[] = [
   { to: "/cerca", label: "Cerca", icon: "◎" },
 ];
 
-const GUIDE_NAV: NavItem = { to: "/guia", label: "Guía", icon: "✦" };
+const GUIDE_NAV: NavItem = { to: "/guia", label: "Panel", icon: "✦" };
 
 export default function Layout() {
   const { user, logout } = useAuth();
-  const { trip } = useTrip();
   const location = useLocation();
   const reduce = useReducedMotion();
   const isHome = location.pathname === "/";
   const scrolled = useScrolled(20, isHome);
   const solidHeader = !isHome || scrolled;
   const navItems = user?.role === "guia" ? [...BASE_NAV, GUIDE_NAV] : BASE_NAV;
-
-  const whatsappHref = `https://wa.me/${trip.assistance.whatsapp}?text=${encodeURIComponent(
-    trip.assistance.whatsappMessage,
-  )}`;
 
   return (
     <div className="mx-auto flex min-h-screen max-w-2xl flex-col">
@@ -44,31 +39,14 @@ export default function Layout() {
                 : "border-b border-transparent bg-gradient-to-b from-noche/85 to-transparent"
             }`}
           >
-            <div>
-              <p className="font-display text-lg font-semibold tracking-[0.3em] text-oro">
-                MISTIKTERRA
-              </p>
-              <p className="text-[10px] uppercase tracking-[0.25em] text-oro/90">
-                Awakening Experiences
-              </p>
-            </div>
+            <BrandLogo to="/" />
             <div className="flex items-center gap-3">
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Asistencia por WhatsApp"
-                className="flex min-h-12 items-center gap-2 rounded-full border border-oro/40 bg-oro/10 px-4 py-2 text-sm font-semibold text-oro transition hover:bg-oro/20"
-              >
-                <span aria-hidden>💬</span>
-                <span className="hidden sm:inline">WhatsApp</span>
-              </a>
               {user ? (
                 <>
                   <div className="text-right">
                     <p className="text-base text-marfil">{user.name}</p>
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-marfil-tenue">
-                      {user.role === "guia" ? "Anfitriona" : "Viajer@"}
+                    <p className="text-xs uppercase tracking-[0.2em] text-marfil-tenue">
+                      {user.role === "guia" ? "Anfitriona" : "Viajero"}
                     </p>
                   </div>
                   <button

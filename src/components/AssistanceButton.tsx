@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useTrip } from "../lib/trip";
 
 export default function AssistanceButton() {
   const { trip } = useTrip();
   const [open, setOpen] = useState(false);
   const { assistance } = trip;
+  const titleId = useId();
+  const closeRef = useRef<HTMLButtonElement>(null);
 
   const telHref = `tel:${assistance.phone.replace(/[^\d+]/g, "")}`;
   const whatsappHref = `https://wa.me/${assistance.whatsapp}?text=${encodeURIComponent(
@@ -12,15 +14,25 @@ export default function AssistanceButton() {
   )}`;
   const emailHref = `mailto:${assistance.email}`;
 
+  useEffect(() => {
+    if (!open) return;
+    closeRef.current?.focus();
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
     <>
       <button
         type="button"
         onClick={() => setOpen(true)}
         className="fixed bottom-24 right-4 z-30 flex h-14 min-h-12 w-14 items-center justify-center rounded-full border border-oro/60 bg-carbon text-2xl text-oro shadow-xl shadow-black/50 transition hover:bg-oro/10"
-        aria-label="Asistencia y SOS por WhatsApp"
+        aria-label="Asistencia del viaje"
       >
-        <span aria-hidden>🆘</span>
+        <span aria-hidden>💬</span>
       </button>
 
       {open ? (
@@ -28,17 +40,19 @@ export default function AssistanceButton() {
           className="fixed inset-0 z-40 flex items-end justify-center bg-black/60 p-4 sm:items-center"
           role="dialog"
           aria-modal="true"
-          aria-label="Asistencia directa"
+          aria-labelledby={titleId}
           onClick={() => setOpen(false)}
         >
           <div
             className="w-full max-w-sm rounded-2xl border border-oro/30 bg-carbon p-6"
             onClick={(event) => event.stopPropagation()}
           >
-            <h3 className="font-display text-xl text-marfil">Asistencia directa</h3>
+            <h3 id={titleId} className="font-display text-xl text-marfil">
+              Asistencia del viaje
+            </h3>
             <p className="mt-1 text-sm text-marfil-tenue">
-              {assistance.contactName} está disponible para cualquier imprevisto
-              con el punto de encuentro.
+              {assistance.contactName} atiende por WhatsApp de 08:00 a 21:00 hrs
+              (24 hrs solo emergencias del grupo).
             </p>
             <div className="mt-5 space-y-3">
               <a
@@ -47,7 +61,7 @@ export default function AssistanceButton() {
                 rel="noopener noreferrer"
                 className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-oro px-5 py-3 text-sm font-bold uppercase tracking-[0.12em] text-noche transition hover:bg-oro-suave"
               >
-                <span aria-hidden>💬</span> WhatsApp / SOS
+                WhatsApp con {assistance.contactName.split(" ")[0]}
               </a>
               <a
                 href={telHref}
@@ -62,7 +76,17 @@ export default function AssistanceButton() {
                 {assistance.email}
               </a>
             </div>
+            <p className="mt-5 text-sm leading-6 text-marfil-tenue">
+              Emergencia local (Turquía y Grecia):{" "}
+              <a
+                href="tel:112"
+                className="font-semibold text-oro underline-offset-4 hover:underline"
+              >
+                112
+              </a>
+            </p>
             <button
+              ref={closeRef}
               type="button"
               onClick={() => setOpen(false)}
               className="mt-4 flex min-h-12 w-full items-center justify-center text-center text-sm text-marfil-tenue transition hover:text-marfil"
