@@ -32,7 +32,7 @@ function rec(
 export function createSeedTrip(): Trip {
   return {
     id: "trip_mar_de_imperios",
-    name: "Turquía y Grecia: Mar de Imperios",
+    name: "Turquía y Grecia",
     location: "Estambul · Capadocia · Atenas · Meteora · Salónica",
     tagline: "Mar de Imperios",
     heroImage: "",
@@ -110,17 +110,17 @@ export function createSeedTrip(): Trip {
           {
             id: "it_2_4",
             time: at("2026-09-21T15:00:00+03:00"),
-            title: "Salida a Cisterna Binbirbirek",
-            location: "Lobby",
+            title: "Cisterna Binbirdirek",
+            location: "Estambul",
             description:
-              "Salida puntual. Ropa y calzado cómodo, protector solar y sombrero.",
+              "Primera visita. Ropa y calzado cómodo, protector solar y sombrero.",
           },
           {
             id: "it_2_5",
             time: at("2026-09-21T16:00:00+03:00"),
-            title: "Cisterna Basílica",
+            title: "Cisterna Basílica (Yerebatan)",
             location: "Estambul",
-            description: "Visita a la emblemática cisterna.",
+            description: "Segunda visita, a pocos minutos de Binbirdirek.",
           },
           {
             id: "it_2_6",
@@ -402,8 +402,7 @@ export function createSeedTrip(): Trip {
         {
           teaching: {
             title: "Danza de los Derviches",
-            body: "Espectáculo místico en Capadocia. Un giro que es oración: presencia, ritmo y silencio.",
-            author: "Mistikterra · Mar de Imperios",
+            body: "Espectáculo incluido en el programa de Capadocia.",
           },
         },
       ),
@@ -528,9 +527,10 @@ export function createSeedTrip(): Trip {
           {
             id: "it_10_1",
             time: at("2026-09-29T07:00:00+03:00"),
-            title: "Maletas en el lobby",
+            title: "Equipaje de día",
             location: "Hotel Electra",
-            description: "Dejar maletas para subirlas al autobús.",
+            description:
+              "Opcional: dejar en el lobby lo que no lleven al recorrido. El check-out es mañana, rumbo a Metsovo.",
           },
           {
             id: "it_10_2",
@@ -725,6 +725,14 @@ export function createSeedTrip(): Trip {
             location: "Salónica",
             description: "Comida de grupo y clausura oficial del viaje.",
           },
+          {
+            id: "it_13_4",
+            time: at("2026-10-02T20:00:00+03:00"),
+            title: "Noche en Salónica",
+            location: "Salónica",
+            description:
+              "Alojamiento por su cuenta. Traslado al aeropuerto el sábado 3 de octubre.",
+          },
         ],
       ),
       day(
@@ -772,7 +780,7 @@ export function createSeedTrip(): Trip {
       rec({
         id: "rec_3",
         name: "Hammam Çemberlitaş",
-        category: "sagrado",
+        category: "barrio",
         zone: "Estambul",
         area: "Sultanahmet",
         summary:

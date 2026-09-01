@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import {
   CATEGORY_LABEL,
   distanceMeters,
-  formatDistance,
+  formatStraightLineDistance,
   type LatLng,
 } from "../lib/places";
 import type { Recommendation } from "../lib/types";
@@ -44,7 +44,7 @@ export default function NearbyPlaces({
         {places.map((place) => {
           const selected = place.id === selectedId;
           const distance = origin
-            ? formatDistance(distanceMeters(origin, place))
+            ? formatStraightLineDistance(distanceMeters(origin, place))
             : null;
 
           if (onSelect) {

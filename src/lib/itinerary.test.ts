@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { focusDayHeading, pickFocusDay } from "./itinerary";
+import { focusDayHeading, pickFocusDay, zoneForDay } from "./itinerary";
 import { createSeedTrip } from "./tripData";
 
 describe("pickFocusDay", () => {
@@ -30,10 +30,22 @@ describe("pickFocusDay", () => {
 describe("createSeedTrip", () => {
   it("seeds the Mar de Imperios program with 14 days and Gabriela", () => {
     const trip = createSeedTrip();
-    expect(trip.name).toBe("Turquía y Grecia: Mar de Imperios");
+    expect(trip.name).toBe("Turquía y Grecia");
+    expect(trip.tagline).toBe("Mar de Imperios");
     expect(trip.itinerary).toHaveLength(14);
     expect(trip.meetingPoint.datetime).toBe("2026-09-20T19:00:00+03:00");
     expect(trip.assistance.contactName).toBe("Gabriela Calderón");
+    expect(trip.itinerary[1].items.some((item) => item.title.includes("Binbirdirek"))).toBe(true);
+    expect(trip.itinerary[1].items.some((item) => item.title.includes("Basílica"))).toBe(true);
+    expect(trip.itinerary[12].items.some((item) => item.title === "Noche en Salónica")).toBe(true);
     expect(trip.heroImage).toBe("");
+  });
+
+  it("maps focus days to Cerca cities", () => {
+    expect(zoneForDay("day_1")).toBe("Estambul");
+    expect(zoneForDay("day_7")).toBe("Capadocia");
+    expect(zoneForDay("day_10")).toBe("Atenas");
+    expect(zoneForDay("day_12")).toBe("Meteora");
+    expect(zoneForDay("day_13")).toBe("Salónica");
   });
 });

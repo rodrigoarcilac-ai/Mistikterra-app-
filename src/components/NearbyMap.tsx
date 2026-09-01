@@ -27,7 +27,7 @@ export default function NearbyMap({
       <span className="mt-map-corner mt-map-corner-br" aria-hidden />
       <div className="flex items-center justify-between gap-3 px-4 pt-3 pb-2">
         <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-oro">
-          Google Maps · Cerca
+          Mapa a pie
         </p>
         <p className="truncate text-xs text-marfil-tenue">{origin.label}</p>
       </div>
@@ -42,7 +42,7 @@ export default function NearbyMap({
         />
       </div>
       <figcaption className="flex flex-wrap items-center justify-between gap-2 px-4 py-2 text-xs text-marfil-tenue">
-        <span>Ruta a pie en español · A origen · B destino</span>
+        <span>Ruta a pie</span>
         {openHref ? (
           <a
             href={openHref}

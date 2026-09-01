@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../lib/auth";
-import { focusDayHeading, pickFocusDay } from "../lib/itinerary";
-import { zonesFrom } from "../lib/places";
+import { focusDayHeading, pickFocusDay, zoneForDay } from "../lib/itinerary";
 import { useTrip } from "../lib/trip";
 import AlertsFeed from "../components/AlertsFeed";
 import AnnouncementsFeed from "../components/AnnouncementsFeed";
@@ -13,7 +12,7 @@ export default function HomePage() {
   const { trip } = useTrip();
   const focusDay = pickFocusDay(trip.itinerary);
   const focusHeading = focusDay ? focusDayHeading(focusDay) : "";
-  const firstZone = zonesFrom(trip.recommendations)[0] ?? "Estambul";
+  const freeTimeZone = focusDay ? zoneForDay(focusDay.id) : "Estambul";
 
   return (
     <div>
@@ -43,10 +42,12 @@ export default function HomePage() {
           <h1 className="mt-1 font-display text-4xl font-semibold text-marfil drop-shadow">
             {trip.name}
           </h1>
-          <p className="mt-1 text-base text-marfil">
-            {trip.location}
-            {user ? ` · Hola, ${user.name.split(" ")[0]}` : null}
-          </p>
+          <p className="mt-1 text-base text-marfil">{trip.location}</p>
+          {user ? (
+            <p className="mt-1 text-base text-marfil-tenue">
+              Hola, {user.name.split(" ")[0]}
+            </p>
+          ) : null}
           <MeetingPointCard />
         </div>
       </section>
@@ -73,7 +74,7 @@ export default function HomePage() {
             to="/cerca"
             className="inline-flex min-h-12 items-center text-base font-semibold text-oro underline-offset-4 hover:underline"
           >
-            Tiempo libre en {firstZone}
+            Tiempo libre en {freeTimeZone}
           </Link>
         </p>
       </div>

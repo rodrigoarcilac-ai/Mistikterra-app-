@@ -74,6 +74,23 @@ export async function buildItineraryPdf(trip: Trip) {
 
   doc.setFont("times", "bold");
   doc.setFontSize(12);
+  doc.text("Asistencia", MARGIN, y);
+  y += 6;
+  doc.setFont("times", "normal");
+  doc.setFontSize(10);
+  const assistance = [
+    trip.assistance.contactName,
+    trip.assistance.phone,
+    trip.assistance.email,
+    "WhatsApp 08:00–21:00 hrs (24 hrs solo emergencias).",
+  ].join("\n");
+  const assistanceLines = doc.splitTextToSize(assistance, width);
+  ensure(assistanceLines.length * 5 + 4);
+  doc.text(assistanceLines, MARGIN, y);
+  y += assistanceLines.length * 5 + 8;
+
+  doc.setFont("times", "bold");
+  doc.setFontSize(12);
   doc.text("Itinerario resumido", MARGIN, y);
   y += 8;
 

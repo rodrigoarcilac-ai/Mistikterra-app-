@@ -1,6 +1,5 @@
 import { useState } from "react";
 import AlertsFeed from "../components/AlertsFeed";
-import DestinationImageFinder from "../components/DestinationImageFinder";
 import { useTrip } from "../lib/trip";
 import type { AlertLevel } from "../lib/types";
 
@@ -9,6 +8,12 @@ const QUICK_ALERTS: { message: string; level: AlertLevel }[] = [
   { message: "Cambio de ubicación, revisen el mapa actualizado.", level: "urgente" },
   { message: "Tiempo libre hasta las 16:00. Disfruten.", level: "info" },
 ];
+
+const LEVEL_LABEL: Record<AlertLevel, string> = {
+  info: "Info",
+  importante: "Importante",
+  urgente: "Urgente",
+};
 
 function Panel({
   title,
@@ -49,11 +54,12 @@ export default function GuidePanelPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-3xl text-marfil">Panel de la guía</h1>
+        <h1 className="font-display text-3xl text-marfil">Panel</h1>
         <p className="text-marfil-tenue">
-          Coordina al grupo en tiempo real. {confirmedCount}{" "}
+          Avisos de este dispositivo (aún no se sincronizan con otros teléfonos).{" "}
+          {confirmedCount}{" "}
           {confirmedCount === 1 ? "persona ha" : "personas han"} confirmado
-          asistencia.
+          asistencia aquí.
         </p>
       </div>
 
@@ -69,7 +75,7 @@ export default function GuidePanelPage() {
 
       <Panel
         title="Emitir alerta prioritaria"
-        description="Un toque para enviar avisos a todo el grupo."
+        description="Un toque para enviar avisos a este teléfono."
       >
         <div className="flex flex-wrap gap-2">
           {QUICK_ALERTS.map((quick) => (
@@ -78,9 +84,9 @@ export default function GuidePanelPage() {
               type="button"
               onClick={() => {
                 emitAlert(quick);
-                notify("Alerta enviada al grupo.");
+                notify("Alerta guardada en este dispositivo.");
               }}
-              className="rounded-full border border-oro/40 px-4 py-2 text-sm text-oro transition hover:bg-oro/10"
+              className="flex min-h-12 items-center rounded-full border border-oro/40 px-4 py-2 text-sm text-oro transition hover:bg-oro/10"
             >
               {quick.message}
             </button>
@@ -101,13 +107,13 @@ export default function GuidePanelPage() {
                 key={level}
                 type="button"
                 onClick={() => setAlertLevel(level)}
-                className={`rounded-full px-3 py-1.5 text-xs uppercase tracking-wide transition ${
+                className={`flex min-h-12 items-center rounded-full px-4 text-sm uppercase tracking-wide transition ${
                   alertLevel === level
                     ? "bg-oro text-noche"
                     : "border border-borde text-marfil-tenue hover:text-marfil"
                 }`}
               >
-                {level}
+                {LEVEL_LABEL[level]}
               </button>
             ))}
             <button
@@ -116,9 +122,9 @@ export default function GuidePanelPage() {
               onClick={() => {
                 emitAlert({ message: alertMessage.trim(), level: alertLevel });
                 setAlertMessage("");
-                notify("Alerta enviada al grupo.");
+                notify("Alerta guardada en este dispositivo.");
               }}
-              className="ml-auto rounded-full bg-oro px-5 py-2 text-sm font-semibold uppercase tracking-[0.12em] text-noche transition hover:bg-oro-suave disabled:cursor-not-allowed disabled:opacity-50"
+              className="ml-auto flex min-h-12 items-center rounded-full bg-oro px-5 text-sm font-semibold uppercase tracking-[0.12em] text-noche transition hover:bg-oro-suave disabled:cursor-not-allowed disabled:opacity-50"
             >
               Enviar
             </button>
@@ -127,15 +133,8 @@ export default function GuidePanelPage() {
       </Panel>
 
       <Panel
-        title="Portada del destino (imagen automática)"
-        description="Escribe el nombre del lugar y la imagen se selecciona sola."
-      >
-        <DestinationImageFinder onApplied={notify} />
-      </Panel>
-
-      <Panel
         title="Actualizar punto de encuentro"
-        description="Cambia la ubicación y el mapa que ve el grupo."
+        description="Cambia la dirección. Si el enlace de Maps trae coordenadas, Cerca las usa."
       >
         <div className="space-y-3">
           <input
@@ -159,7 +158,7 @@ export default function GuidePanelPage() {
               });
               notify("Punto de encuentro actualizado.");
             }}
-            className="w-full rounded-full bg-oro px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.12em] text-noche transition hover:bg-oro-suave"
+            className="flex min-h-12 w-full items-center justify-center rounded-full bg-oro px-5 text-sm font-semibold uppercase tracking-[0.12em] text-noche transition hover:bg-oro-suave"
           >
             Actualizar ubicación
           </button>
@@ -168,7 +167,7 @@ export default function GuidePanelPage() {
 
       <Panel
         title="Publicar comunicado"
-        description="Avisos que quedan en el tablero del grupo."
+        description="Avisos que quedan en el tablero de este dispositivo."
       >
         <div className="space-y-3">
           <input
@@ -193,7 +192,7 @@ export default function GuidePanelPage() {
               setAnnBody("");
               notify("Comunicado publicado.");
             }}
-            className="w-full rounded-full bg-oro px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.12em] text-noche transition hover:bg-oro-suave disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex min-h-12 w-full items-center justify-center rounded-full bg-oro px-5 text-sm font-semibold uppercase tracking-[0.12em] text-noche transition hover:bg-oro-suave disabled:cursor-not-allowed disabled:opacity-50"
           >
             Publicar
           </button>

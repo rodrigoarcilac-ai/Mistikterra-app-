@@ -4,9 +4,11 @@ import NearbyPlaces from "../components/NearbyPlaces";
 import {
   CATEGORY_LABEL,
   PLACE_CATEGORIES,
+  distanceMeters,
   filterRecommendations,
   formatDistance,
   hasCoords,
+  isWalkableDistance,
   originForZone,
   sortByNearest,
   zonesFrom,
@@ -53,12 +55,17 @@ export default function ExplorePage() {
 
   const selected =
     ranked.find((place) => place.id === pickedId) ?? ranked[0] ?? null;
-  const route = useWalkingRoute(origin, selected);
+  const selectedMeters = selected ? distanceMeters(origin, selected) : 0;
+  const walkable = selected ? isWalkableDistance(selectedMeters) : false;
+  const route = useWalkingRoute(origin, walkable ? selected : null);
 
   return (
     <div className="space-y-4">
       <div>
         <h1 className="font-display text-3xl text-marfil">Cerca</h1>
+        <p className="mt-2 text-sm leading-6 text-marfil-tenue">
+          Elige ciudad y un lugar. El mapa traza cómo llegar a pie.
+        </p>
         <div className="mt-3 space-y-1.5 rounded-2xl border border-borde bg-carbon/50 p-2">
           <div className="no-scrollbar flex gap-1.5 overflow-x-auto">
             {zones.map((option) => (
@@ -95,25 +102,41 @@ export default function ExplorePage() {
             )}
           </div>
         </div>
-        <p className="mt-3 text-sm leading-6 text-marfil-tenue">
-          Elige ciudad y un lugar. El mapa traza cómo llegar a pie.
-        </p>
       </div>
 
       {ranked.length === 0 ? (
-        <p className="text-base text-marfil-tenue">
-          No hay recomendaciones con ese filtro.
-        </p>
+        <div className="space-y-3">
+          <p className="text-base text-marfil-tenue">
+            Ningún lugar con ese tipo.
+          </p>
+          <button
+            type="button"
+            onClick={() => setCategory("todos")}
+            className="flex min-h-12 items-center text-base font-semibold text-oro underline-offset-4 hover:underline"
+          >
+            Mostrar todos
+          </button>
+        </div>
       ) : (
         <>
-          <NearbyMap origin={origin} destination={selected} />
-          {selected ? (
+          {walkable ? (
+            <NearbyMap origin={origin} destination={selected} />
+          ) : (
+            <p className="rounded-2xl border border-borde bg-carbon/50 px-4 py-4 text-base leading-6 text-marfil">
+              Este lugar no está a pie desde {origin.label} (
+              {formatDistance(selectedMeters)}). Usa el traslado del grupo.
+            </p>
+          )}
+          {selected && walkable ? (
             <p className="text-sm leading-6 text-marfil-tenue">
               {route
-                ? `Ruta a ${selected.name}: ${formatDuration(route.durationS)} · ${formatDistance(route.distanceM)} desde ${origin.label}.`
-                : `Ruta más cercana a ${selected.name} desde ${origin.label}…`}
+                ? `A pie (estimación) a ${selected.name}: ${formatDuration(route.durationS)} · ${formatDistance(route.distanceM)} desde ${origin.label}.`
+                : `Ruta a pie (estimación) a ${selected.name} desde ${origin.label}…`}
             </p>
           ) : null}
+          <p className="text-xs text-marfil-tenue">
+            Las distancias de la lista son en línea recta.
+          </p>
           <NearbyPlaces
             places={ranked}
             selectedId={selected?.id}

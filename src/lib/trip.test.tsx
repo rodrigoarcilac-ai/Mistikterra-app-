@@ -44,11 +44,25 @@ describe("TripProvider", () => {
     expect(result.current.trip.meetingPoint.mapUrl).toContain("nueva");
   });
 
+  it("updates meeting coordinates from a Maps URL", () => {
+    const { result } = renderHook(() => useTrip(), { wrapper });
+
+    act(() => {
+      result.current.updateMeetingLocation({
+        address: "Hotel Sura Design",
+        mapUrl: "https://www.google.com/maps/place/Sura/@41.01,28.98,17z",
+      });
+    });
+
+    expect(result.current.trip.meetingPoint.lat).toBe(41.01);
+    expect(result.current.trip.meetingPoint.lng).toBe(28.98);
+  });
+
   it("persists trip state to localStorage", () => {
     const { result } = renderHook(() => useTrip(), { wrapper });
     act(() => {
       result.current.postAnnouncement({ title: "Aviso", body: "Cuerpo" });
     });
-    expect(localStorage.getItem("mt.trip.v7")).toContain("Aviso");
+    expect(localStorage.getItem("mt.trip.v8")).toContain("Aviso");
   });
 });

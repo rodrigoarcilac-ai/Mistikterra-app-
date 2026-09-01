@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  coordsFromMapUrl,
   filterRecommendations,
   distanceMeters,
   originForZone,
@@ -21,7 +22,7 @@ describe("recommendations", () => {
       "Meteora",
       "Salónica",
     ]);
-    expect(recommendations.some((place) => place.category === "sagrado")).toBe(
+    expect(recommendations.some((place) => place.category === "barrio")).toBe(
       true,
     );
     expect(recommendations.some((place) => place.category === "gastronomia")).toBe(
@@ -55,6 +56,7 @@ describe("recommendations", () => {
   it("uses the meeting point as Estambul origin and sorts by nearest", () => {
     const trip = createSeedTrip();
     const origin = originForZone("Estambul", trip.meetingPoint);
+    expect(origin.label).toBe("Hotel Sura Design");
     expect(origin.lat).toBe(trip.meetingPoint.lat);
     expect(origin.lng).toBe(trip.meetingPoint.lng);
 
@@ -76,6 +78,22 @@ describe("recommendations", () => {
     });
     expect(origin.lat).toBe(41.0065);
     expect(origin.lng).toBe(28.9784);
+  });
+
+  it("uses Kalambaka as the Meteora walking origin", () => {
+    const trip = createSeedTrip();
+    const origin = originForZone("Meteora", trip.meetingPoint);
+    expect(origin.label).toBe("Kalambaka");
+    const kalambaka = trip.recommendations.find((place) => place.id === "rec_9");
+    expect(kalambaka).toBeTruthy();
+    expect(distanceMeters(origin, kalambaka!)).toBeLessThan(2500);
+  });
+
+  it("reads coordinates from a Google Maps URL", () => {
+    const parsed = coordsFromMapUrl(
+      "https://www.google.com/maps/place/Hotel/@41.0065,28.9784,17z",
+    );
+    expect(parsed).toEqual({ lat: 41.0065, lng: 28.9784 });
   });
 
   it("uses Seraphim Cave as the Capadocia origin", () => {

@@ -43,3 +43,13 @@ export function focusDayHeading(
   if (key > today) return "Próxima jornada";
   return "Última jornada";
 }
+
+export function zoneForDay(dayId: string): string {
+  if (["day_1", "day_2", "day_3", "day_4", "day_5"].includes(dayId)) {
+    return "Estambul";
+  }
+  if (["day_6", "day_7", "day_8"].includes(dayId)) return "Capadocia";
+  if (["day_9", "day_10"].includes(dayId)) return "Atenas";
+  if (["day_11", "day_12"].includes(dayId)) return "Meteora";
+  return "Salónica";
+}

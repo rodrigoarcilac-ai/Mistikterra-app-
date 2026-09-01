@@ -13,12 +13,12 @@ describe("itineraryPdf", () => {
     expect(header).toBe("%PDF");
     expect(doc.getNumberOfPages()).toBeGreaterThanOrEqual(1);
     expect(asText).toContain("MISTIKTERRA");
-    expect(asText).toContain("Itinerario resumido");
+    expect(asText).toContain("Asistencia");
   });
 
   it("names the file from the trip title", () => {
     expect(itineraryPdfFileName(createSeedTrip())).toBe(
-      "mistikterra-itinerario-turquia-y-grecia-mar-de-imperios.pdf",
+      "mistikterra-itinerario-turquia-y-grecia.pdf",
     );
   });
 });

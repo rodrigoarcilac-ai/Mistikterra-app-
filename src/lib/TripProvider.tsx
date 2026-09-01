@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { createId } from "./format";
+import { coordsFromMapUrl, hasCoords } from "./places";
 import { createSeedTrip } from "./tripData";
 import type { Alert, AlertLevel, Announcement, Trip } from "./types";
 import { TripContext, type TripContextValue } from "./trip";
 
 // La versión en la clave fuerza el reseed cuando cambia el esquema del viaje
 // (p. ej. al añadir imágenes o enseñanzas). Súbela si cambias la forma de Trip.
-const TRIP_KEY = "mt.trip.v7";
+const TRIP_KEY = "mt.trip.v8";
 
 function loadTrip(): Trip {
   try {
@@ -49,15 +50,23 @@ export function TripProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const updateMeetingLocation = useCallback(
-    (input: { address: string; mapUrl: string }) => {
-      setTrip((prev) => ({
-        ...prev,
-        meetingPoint: {
-          ...prev.meetingPoint,
-          address: input.address,
-          mapUrl: input.mapUrl,
-        },
-      }));
+    (input: { address: string; mapUrl: string; lat?: number; lng?: number }) => {
+      setTrip((prev) => {
+        const parsed = coordsFromMapUrl(input.mapUrl);
+        const nextCoords =
+          hasCoords({ lat: input.lat, lng: input.lng })
+            ? { lat: input.lat, lng: input.lng }
+            : parsed;
+        return {
+          ...prev,
+          meetingPoint: {
+            ...prev.meetingPoint,
+            address: input.address,
+            mapUrl: input.mapUrl,
+            ...(nextCoords ?? {}),
+          },
+        };
+      });
     },
     [],
   );

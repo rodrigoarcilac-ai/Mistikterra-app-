@@ -25,7 +25,7 @@ export default function ItineraryPage() {
         <h1 className="font-display text-3xl text-marfil">Itinerario</h1>
         <p className="text-base text-marfil-tenue">
           {online
-            ? "Resumen de tu viaje, listo para llevar."
+            ? "14 jornadas · 20 sept – 3 oct 2026"
             : "Sin conexión · consultando la copia guardada en tu dispositivo."}
         </p>
       </div>

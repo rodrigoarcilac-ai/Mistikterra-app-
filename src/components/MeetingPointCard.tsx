@@ -21,15 +21,13 @@ export default function MeetingPointCard() {
         {meetingPoint.title}
       </h2>
       <p className="mt-1 text-base text-marfil-tenue">
-        {formatDate(meetingPoint.datetime)} · {formatTime(meetingPoint.datetime)}
+        {formatDate(meetingPoint.datetime)} · {formatTime(meetingPoint.datetime)}{" "}
+        · hora local del viaje
       </p>
 
       <CountdownTimer targetIso={meetingPoint.datetime} />
 
-      <p className="mt-5 text-lg text-marfil">
-        <span aria-hidden>📍 </span>
-        {meetingPoint.address}
-      </p>
+      <p className="mt-5 text-lg text-marfil">{meetingPoint.address}</p>
       {meetingPoint.note ? (
         <p className="mt-1 text-base text-marfil-tenue">{meetingPoint.note}</p>
       ) : null}
@@ -41,7 +39,7 @@ export default function MeetingPointCard() {
           rel="noopener noreferrer"
           className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-oro px-5 py-3 text-base font-bold uppercase tracking-[0.1em] text-noche shadow-lg shadow-black/30 transition hover:bg-oro-suave focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oro"
         >
-          <span aria-hidden>🧭</span> Cómo llegar / Ver en mapa
+          Cómo llegar
         </a>
         <button
           type="button"

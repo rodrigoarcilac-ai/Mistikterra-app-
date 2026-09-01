@@ -22,9 +22,31 @@ const ZONE_ORIGINS: Record<string, LatLng & { label: string }> = {
   Estambul: { lat: 41.0065, lng: 28.9784, label: "Hotel Sura Design" },
   Capadocia: { lat: 38.6428, lng: 34.8305, label: "Seraphim Cave Suites" },
   Atenas: { lat: 37.9758, lng: 23.7354, label: "Electra Palace Atenas" },
-  Meteora: { lat: 39.7706, lng: 21.1828, label: "Grand Forest Metsovo" },
+  Meteora: { lat: 39.7042, lng: 21.6267, label: "Kalambaka" },
   Salónica: { lat: 40.6388, lng: 22.9478, label: "Hagios Demetrios" },
 };
+
+/** Distancia a pie razonable para “Cerca”. Más allá es traslado. */
+export const WALKABLE_METERS = 2500;
+
+export function isWalkableDistance(meters: number): boolean {
+  return meters <= WALKABLE_METERS;
+}
+
+export function formatStraightLineDistance(meters: number): string {
+  return `a ~${formatDistance(meters)}`;
+}
+
+export function coordsFromMapUrl(url: string): LatLng | null {
+  const at = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+  const query = url.match(/[?&]q=(-?\d+\.\d+),(-?\d+\.\d+)/);
+  const match = at ?? query;
+  if (!match) return null;
+  const lat = Number(match[1]);
+  const lng = Number(match[2]);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  return { lat, lng };
+}
 
 export function zonesFrom(recommendations: Recommendation[]): string[] {
   const seen: string[] = [];
@@ -81,15 +103,23 @@ export function originForZone(
   zone: string,
   meeting: MeetingPoint,
 ): LatLng & { label: string } {
+  const named = ZONE_ORIGINS[zone];
   if (zone === "Estambul" && hasCoords(meeting)) {
-    return { lat: meeting.lat, lng: meeting.lng, label: meeting.title };
+    return {
+      lat: meeting.lat,
+      lng: meeting.lng,
+      label: named?.label ?? "Hotel Sura Design",
+    };
   }
-  const fallback = ZONE_ORIGINS[zone];
-  if (fallback) return fallback;
+  if (named) return named;
   if (hasCoords(meeting)) {
-    return { lat: meeting.lat, lng: meeting.lng, label: meeting.title };
+    return {
+      lat: meeting.lat,
+      lng: meeting.lng,
+      label: "Hotel Sura Design",
+    };
   }
-  return { ...ZONE_ORIGINS.Estambul, label: meeting.title };
+  return { ...ZONE_ORIGINS.Estambul };
 }
 
 export function sortByNearest(
