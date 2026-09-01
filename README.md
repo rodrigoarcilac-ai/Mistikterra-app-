@@ -6,6 +6,9 @@ experiencias personalizadas y de lujo — turismo espiritual y esotérico premiu
 La especificación completa del proyecto (misión, sistema de diseño, alcance por
 fases y arquitectura) está en **`context.md - Mistikterra Project.md`**.
 
+La lista para **terminar y entregar** el producto (web/PWA, sin App Store)
+está en **`ENTREGA.md`**.
+
 ## Estado actual
 
 MVP de la **Fase 1 (núcleo logístico)** más piezas ligeras de la Fase 2:
