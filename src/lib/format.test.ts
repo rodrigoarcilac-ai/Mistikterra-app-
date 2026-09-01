@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createId, formatDate, formatTime, getCountdown } from "./format";
+import { createId, countdownPhrase, formatDate, formatTime, getCountdown } from "./format";
 
 describe("getCountdown", () => {
   it("breaks down a future target into days/hours/minutes/seconds", () => {
@@ -36,6 +36,34 @@ describe("formatTime", () => {
   it("shows the program local time, not the device timezone", () => {
     const label = formatTime("2026-09-20T19:00:00+03:00");
     expect(label).toMatch(/7:00|19:00/);
+  });
+});
+
+describe("countdownPhrase", () => {
+  const cocktail = "2026-09-20T19:00:00+03:00";
+
+  it("speaks remaining days in a friendly sentence", () => {
+    const now = Date.parse("2026-09-01T12:00:00+03:00");
+    expect(countdownPhrase(cocktail, now)).toBe(
+      "Faltan 19 días para el cóctel",
+    );
+  });
+
+  it("uses tonight's local time on the calendar day of the meeting", () => {
+    const now = Date.parse("2026-09-20T10:00:00+03:00");
+    const phrase = countdownPhrase(cocktail, now);
+    expect(phrase.startsWith("Hoy a las ")).toBe(true);
+    expect(phrase).toMatch(/7:00|19:00/);
+  });
+
+  it("counts hours when the meeting is tomorrow", () => {
+    const now = Date.parse("2026-09-19T22:00:00+03:00");
+    expect(countdownPhrase(cocktail, now)).toBe("Faltan 21 horas");
+  });
+
+  it("announces when the meeting has started", () => {
+    const now = Date.parse("2026-09-20T20:00:00+03:00");
+    expect(countdownPhrase(cocktail, now)).toBe("El encuentro ya comenzó");
   });
 });
 

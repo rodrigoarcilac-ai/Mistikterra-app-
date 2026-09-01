@@ -47,3 +47,39 @@ export function getCountdown(targetIso: string, now: number = Date.now()): Count
 
   return { total, days, hours, minutes, seconds, past: total <= 0 };
 }
+
+function tripCalendarDay(isoOrMs: string | number): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: TRIP_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date(isoOrMs));
+}
+
+export function countdownPhrase(
+  targetIso: string,
+  now: number = Date.now(),
+): string {
+  const countdown = getCountdown(targetIso, now);
+  if (countdown.past) return "El encuentro ya comenzó";
+  if (countdown.days > 0) {
+    return countdown.days === 1
+      ? "Falta 1 día para el cóctel"
+      : `Faltan ${countdown.days} días para el cóctel`;
+  }
+  if (tripCalendarDay(now) === tripCalendarDay(targetIso)) {
+    return `Hoy a las ${formatTime(targetIso)}`;
+  }
+  if (countdown.hours > 0) {
+    return countdown.hours === 1
+      ? "Falta 1 hora"
+      : `Faltan ${countdown.hours} horas`;
+  }
+  if (countdown.minutes > 0) {
+    return countdown.minutes === 1
+      ? "Falta 1 minuto"
+      : `Faltan ${countdown.minutes} minutos`;
+  }
+  return "El encuentro está por comenzar";
+}
