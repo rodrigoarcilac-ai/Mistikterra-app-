@@ -83,7 +83,7 @@ export type Recommendation = {
   id: string;
   name: string;
   category: PlaceCategory;
-  /** Ciudad o etapa del viaje (Kioto, Nara, Monte Koya…). */
+  /** Ciudad o etapa del viaje (Estambul, Capadocia, Atenas…). */
   zone: string;
   area: string;
   summary: string;

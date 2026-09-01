@@ -19,9 +19,11 @@ export const CATEGORY_LABEL: Record<PlaceCategory, string> = {
 };
 
 const ZONE_ORIGINS: Record<string, LatLng & { label: string }> = {
-  Kioto: { lat: 34.96714, lng: 135.77267, label: "Punto de encuentro" },
-  Nara: { lat: 34.6889, lng: 135.8398, label: "Todai-ji" },
-  "Monte Koya": { lat: 34.2135, lng: 135.5836, label: "Danjo Garan" },
+  Estambul: { lat: 41.0065, lng: 28.9784, label: "Hotel Sura Design" },
+  Capadocia: { lat: 38.6428, lng: 34.8305, label: "Seraphim Cave Suites" },
+  Atenas: { lat: 37.9758, lng: 23.7354, label: "Electra Palace Atenas" },
+  Meteora: { lat: 39.7706, lng: 21.1828, label: "Grand Forest Metsovo" },
+  Salónica: { lat: 40.6388, lng: 22.9478, label: "Hagios Demetrios" },
 };
 
 export function zonesFrom(recommendations: Recommendation[]): string[] {
@@ -79,10 +81,7 @@ export function originForZone(
   zone: string,
   meeting: MeetingPoint,
 ): LatLng & { label: string } {
-  if (
-    (zone === "todos" || zone === "Kioto") &&
-    hasCoords(meeting)
-  ) {
+  if (zone === "Estambul" && hasCoords(meeting)) {
     return { lat: meeting.lat, lng: meeting.lng, label: meeting.title };
   }
   const fallback = ZONE_ORIGINS[zone];
@@ -90,7 +89,7 @@ export function originForZone(
   if (hasCoords(meeting)) {
     return { lat: meeting.lat, lng: meeting.lng, label: meeting.title };
   }
-  return { lat: 34.96714, lng: 135.77267, label: meeting.title };
+  return { ...ZONE_ORIGINS.Estambul, label: meeting.title };
 }
 
 export function sortByNearest(
