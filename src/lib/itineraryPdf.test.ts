@@ -18,7 +18,7 @@ describe("itineraryPdf", () => {
 
   it("names the file from the trip title", () => {
     expect(itineraryPdfFileName(createSeedTrip())).toBe(
-      "mistikterra-itinerario-despertar-en-japon.pdf",
+      "mistikterra-itinerario-turquia-y-grecia-mar-de-imperios.pdf",
     );
   });
 });
