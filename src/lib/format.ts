@@ -11,6 +11,7 @@ const dateFormatter = new Intl.DateTimeFormat("es-MX", {
   weekday: "long",
   day: "numeric",
   month: "long",
+  year: "numeric",
 });
 
 export function formatTime(iso: string): string {

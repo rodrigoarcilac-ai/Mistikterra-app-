@@ -40,7 +40,7 @@ export default function ItineraryPage() {
         {downloading ? "Preparando PDF…" : "Descargar PDF"}
       </button>
 
-      <ItineraryList compact />
+      <ItineraryList />
     </div>
   );
 }

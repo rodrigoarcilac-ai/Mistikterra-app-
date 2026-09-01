@@ -1,13 +1,21 @@
 import { formatTime } from "../lib/format";
 import { useTrip } from "../lib/trip";
+import type { ItineraryDay } from "../lib/types";
 import TeachingCard from "./TeachingCard";
 
-export default function ItineraryList({ compact = false }: { compact?: boolean }) {
+export default function ItineraryList({
+  compact = false,
+  days,
+}: {
+  compact?: boolean;
+  days?: ItineraryDay[];
+}) {
   const { trip } = useTrip();
+  const list = days ?? trip.itinerary;
 
   return (
     <div className="space-y-10">
-      {trip.itinerary.map((day) => (
+      {list.map((day) => (
         <section key={day.id} aria-label={day.label} className="space-y-4">
           <h3 className="font-display text-xl font-semibold text-oro">
             {day.label}

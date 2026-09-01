@@ -32,22 +32,24 @@ export default function ExplorePage() {
     () => zonesFrom(trip.recommendations),
     [trip.recommendations],
   );
-  const [zone, setZone] = useState<string>("todos");
+  const [zone, setZone] = useState<string | null>(null);
   const [category, setCategory] = useState<CategoryFilter>("todos");
   const [pickedId, setPickedId] = useState<string | null>(null);
 
+  const activeZone = zone ?? zones[0] ?? "";
+
   const origin = useMemo(
-    () => originForZone(zone, trip.meetingPoint),
-    [trip.meetingPoint, zone],
+    () => originForZone(activeZone, trip.meetingPoint),
+    [trip.meetingPoint, activeZone],
   );
 
   const ranked = useMemo(() => {
     const places = filterRecommendations(trip.recommendations, {
-      zone: zone === "todos" ? undefined : zone,
+      zone: activeZone || undefined,
       category,
     }).filter(hasCoords);
     return sortByNearest(places, origin);
-  }, [category, origin, trip.recommendations, zone]);
+  }, [activeZone, category, origin, trip.recommendations]);
 
   const selected =
     ranked.find((place) => place.id === pickedId) ?? ranked[0] ?? null;
@@ -59,15 +61,18 @@ export default function ExplorePage() {
         <h1 className="font-display text-3xl text-marfil">Cerca</h1>
         <div className="mt-3 space-y-1.5 rounded-2xl border border-borde bg-carbon/50 p-2">
           <div className="no-scrollbar flex gap-1.5 overflow-x-auto">
-            {["todos", ...zones].map((option) => (
+            {zones.map((option) => (
               <button
                 key={option}
                 type="button"
-                onClick={() => setZone(option)}
-                aria-pressed={zone === option}
-                className={chipClass(zone === option)}
+                onClick={() => {
+                  setZone(option);
+                  setPickedId(null);
+                }}
+                aria-pressed={activeZone === option}
+                className={chipClass(activeZone === option)}
               >
-                {option === "todos" ? "Todas" : option}
+                {option}
               </button>
             ))}
           </div>
@@ -77,7 +82,10 @@ export default function ExplorePage() {
                 <button
                   key={option}
                   type="button"
-                  onClick={() => setCategory(option)}
+                  onClick={() => {
+                    setCategory(option);
+                    setPickedId(null);
+                  }}
                   aria-pressed={category === option}
                   className={chipClass(category === option)}
                 >
@@ -88,8 +96,7 @@ export default function ExplorePage() {
           </div>
         </div>
         <p className="mt-3 text-sm leading-6 text-marfil-tenue">
-          Elige un lugar. Google Maps lo muestra en español y traza la ruta a
-          pie más cercana desde el punto de referencia de la zona.
+          Elige ciudad y un lugar. El mapa traza cómo llegar a pie.
         </p>
       </div>
 
