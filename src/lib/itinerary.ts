@@ -1,11 +1,10 @@
 import type { ItineraryDay } from "./types";
-
-const TRIP_TZ = "Europe/Istanbul";
+import { TRIP_TIME_ZONE } from "./format";
 
 /** YYYY-MM-DD in the trip's local calendar (Turquía/Grecia, UTC+3 in these dates). */
 export function calendarDayKey(
   isoOrMs: string | number,
-  timeZone = TRIP_TZ,
+  timeZone = TRIP_TIME_ZONE,
 ): string {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone,

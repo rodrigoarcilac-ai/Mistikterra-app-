@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createId, formatDate, getCountdown } from "./format";
+import { createId, formatDate, formatTime, getCountdown } from "./format";
 
 describe("getCountdown", () => {
   it("breaks down a future target into days/hours/minutes/seconds", () => {
@@ -29,6 +29,13 @@ describe("formatDate", () => {
     const label = formatDate("2026-09-20T19:00:00+03:00");
     expect(label).toMatch(/2026/);
     expect(label.toLowerCase()).toContain("septiembre");
+  });
+});
+
+describe("formatTime", () => {
+  it("shows the program local time, not the device timezone", () => {
+    const label = formatTime("2026-09-20T19:00:00+03:00");
+    expect(label).toMatch(/7:00|19:00/);
   });
 });
 

@@ -2,9 +2,13 @@ export function createId(prefix = "id"): string {
   return `${prefix}_${Math.random().toString(36).slice(2, 9)}`;
 }
 
+/** Hora local del programa (Turquía/Grecia, EEST / UTC+3 en estas fechas). */
+export const TRIP_TIME_ZONE = "Europe/Istanbul";
+
 const timeFormatter = new Intl.DateTimeFormat("es-MX", {
   hour: "2-digit",
   minute: "2-digit",
+  timeZone: TRIP_TIME_ZONE,
 });
 
 const dateFormatter = new Intl.DateTimeFormat("es-MX", {
@@ -12,6 +16,7 @@ const dateFormatter = new Intl.DateTimeFormat("es-MX", {
   day: "numeric",
   month: "long",
   year: "numeric",
+  timeZone: TRIP_TIME_ZONE,
 });
 
 export function formatTime(iso: string): string {
