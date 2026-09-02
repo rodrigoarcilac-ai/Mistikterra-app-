@@ -36,7 +36,7 @@ export default function Layout() {
             } ${
               solidHeader
                 ? "border-b border-borde/80 bg-carbon/95 backdrop-blur-md"
-                : "border-b border-transparent bg-gradient-to-b from-noche/85 to-transparent"
+                : "border-b border-transparent bg-gradient-to-b from-noche/90 to-transparent"
             }`}
           >
             <BrandLogo to="/" />

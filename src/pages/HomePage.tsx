@@ -38,7 +38,7 @@ export default function HomePage() {
           alt={hero.alt}
           className="absolute inset-0 h-full w-full object-cover pointer-events-none"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-noche/80 via-noche/40 to-noche" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-noche/90 via-noche/70 to-noche" />
         <div className="relative flex min-h-[100dvh] flex-col justify-end px-5 pb-8 pt-24">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-oro">
             {trip.tagline}
