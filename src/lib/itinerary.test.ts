@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { focusDayHeading, pickFocusDay, zoneForDay } from "./itinerary";
+import {
+  cocktailHasStarted,
+  focusDayHeading,
+  pickFocusDay,
+  pickNextItem,
+  zoneForDay,
+} from "./itinerary";
 import { createSeedTrip } from "./tripData";
 
 describe("pickFocusDay", () => {
@@ -24,6 +30,44 @@ describe("pickFocusDay", () => {
     const focus = pickFocusDay(days, now);
     expect(focus?.id).toBe("day_14");
     expect(focusDayHeading(focus!, now)).toBe("Última jornada");
+  });
+});
+
+describe("pickNextItem", () => {
+  const days = createSeedTrip().itinerary;
+
+  it("returns the first arrival before the trip starts", () => {
+    const now = Date.parse("2026-09-02T12:00:00+03:00");
+    expect(pickNextItem(days, now)?.item.title).toBe("Llegada y traslado");
+  });
+
+  it("returns the next timed stop mid-day", () => {
+    const now = Date.parse("2026-09-21T15:30:00+03:00");
+    expect(pickNextItem(days, now)?.item.title).toBe(
+      "Cisterna Basílica (Yerebatan)",
+    );
+  });
+
+  it("returns null after the last activity", () => {
+    const now = Date.parse("2026-10-03T12:00:00+03:00");
+    expect(pickNextItem(days, now)).toBeNull();
+  });
+});
+
+describe("cocktailHasStarted", () => {
+  it("is false before the welcome drink and true after", () => {
+    expect(
+      cocktailHasStarted(
+        "2026-09-20T19:00:00+03:00",
+        Date.parse("2026-09-02T12:00:00+03:00"),
+      ),
+    ).toBe(false);
+    expect(
+      cocktailHasStarted(
+        "2026-09-20T19:00:00+03:00",
+        Date.parse("2026-09-20T19:00:00+03:00"),
+      ),
+    ).toBe(true);
   });
 });
 

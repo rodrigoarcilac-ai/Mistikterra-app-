@@ -1,5 +1,10 @@
-import type { ItineraryDay } from "./types";
+import type { ItineraryDay, ItineraryItem } from "./types";
 import { TRIP_TIME_ZONE } from "./format";
+
+export type NextProgramItem = {
+  day: ItineraryDay;
+  item: ItineraryItem;
+};
 
 /** YYYY-MM-DD in the trip's local calendar (Turquía/Grecia, UTC+3 in these dates). */
 export function calendarDayKey(
@@ -31,6 +36,30 @@ export function pickFocusDay(
   if (sameDay) return sameDay;
   const upcoming = sorted.find((day) => calendarDayKey(day.date) > today);
   return upcoming ?? sorted[sorted.length - 1];
+}
+
+/** First program item whose start time is still in the future (or happening now). */
+export function pickNextItem(
+  days: ItineraryDay[],
+  now: number = Date.now(),
+): NextProgramItem | null {
+  const timed = days.flatMap((day) =>
+    day.items.map((item) => ({ day, item })),
+  );
+  timed.sort(
+    (a, b) =>
+      new Date(a.item.time).getTime() - new Date(b.item.time).getTime(),
+  );
+  return (
+    timed.find((entry) => new Date(entry.item.time).getTime() >= now) ?? null
+  );
+}
+
+export function cocktailHasStarted(
+  cocktailIso: string,
+  now: number = Date.now(),
+): boolean {
+  return now >= new Date(cocktailIso).getTime();
 }
 
 export function focusDayHeading(
