@@ -2,6 +2,8 @@ import type { MeetingPoint, PlaceCategory, Recommendation } from "./types";
 
 export type LatLng = { lat: number; lng: number };
 
+export type MapOrigin = LatLng & { label: string };
+
 export const PLACE_CATEGORIES: PlaceCategory[] = [
   "sagrado",
   "mirador",
@@ -18,7 +20,7 @@ export const CATEGORY_LABEL: Record<PlaceCategory, string> = {
   barrio: "Barrio",
 };
 
-const ZONE_ORIGINS: Record<string, LatLng & { label: string }> = {
+export const ZONE_ORIGINS: Record<string, MapOrigin> = {
   Estambul: { lat: 41.0065, lng: 28.9784, label: "Hotel Sura Design" },
   Capadocia: { lat: 38.6428, lng: 34.8305, label: "Seraphim Cave Suites" },
   Atenas: { lat: 37.9758, lng: 23.7354, label: "Electra Palace Atenas" },
@@ -28,6 +30,9 @@ const ZONE_ORIGINS: Record<string, LatLng & { label: string }> = {
 
 /** Distancia a pie razonable para “Cerca”. Más allá es traslado. */
 export const WALKABLE_METERS = 2500;
+
+/** Si el GPS está más lejos que esto del hotel activo, se puede sugerir otra ciudad. */
+export const ZONE_HINT_METERS = 50_000;
 
 export function isWalkableDistance(meters: number): boolean {
   return meters <= WALKABLE_METERS;
@@ -99,10 +104,7 @@ export function hasCoords(point: Partial<LatLng> | null | undefined): point is L
   );
 }
 
-export function originForZone(
-  zone: string,
-  meeting: MeetingPoint,
-): LatLng & { label: string } {
+export function originForZone(zone: string, meeting: MeetingPoint): MapOrigin {
   const named = ZONE_ORIGINS[zone];
   if (zone === "Estambul" && hasCoords(meeting)) {
     return {
@@ -129,5 +131,31 @@ export function sortByNearest(
   return [...places].sort(
     (a, b) => distanceMeters(origin, a) - distanceMeters(origin, b),
   );
+}
+
+/** Si el GPS está claramente en otra ciudad del programa, sugerir cambiar el chip (sin auto-cambiar). */
+export function suggestZoneFromPosition(
+  position: LatLng,
+  activeZone: string,
+  meeting: MeetingPoint,
+): string | null {
+  const distanceFromCurrent = distanceMeters(
+    originForZone(activeZone, meeting),
+    position,
+  );
+  if (distanceFromCurrent < ZONE_HINT_METERS) return null;
+
+  let nearest: string | null = null;
+  let nearestMeters = Number.POSITIVE_INFINITY;
+  for (const [zone, origin] of Object.entries(ZONE_ORIGINS)) {
+    if (zone === activeZone) continue;
+    const meters = distanceMeters(origin, position);
+    if (meters < nearestMeters) {
+      nearest = zone;
+      nearestMeters = meters;
+    }
+  }
+  if (!nearest || nearestMeters >= ZONE_HINT_METERS) return null;
+  return nearest;
 }
 
