@@ -3,9 +3,9 @@ import {
   coordsFromMapUrl,
   filterRecommendations,
   distanceMeters,
+  nearestZoneFromPosition,
   originForZone,
   sortByNearest,
-  suggestZoneFromPosition,
   zonesFrom,
 } from "./places";
 import { createSeedTrip } from "./tripData";
@@ -104,21 +104,12 @@ describe("recommendations", () => {
     expect(origin.lat).toBeCloseTo(38.6428, 3);
   });
 
-  it("suggests Capadocia when GPS is far from the Istanbul hotel", () => {
-    const trip = createSeedTrip();
+  it("picks the nearest trip city from a GPS pin", () => {
     expect(
-      suggestZoneFromPosition(
-        { lat: 38.6428, lng: 34.8305 },
-        "Estambul",
-        trip.meetingPoint,
-      ),
+      nearestZoneFromPosition({ lat: 41.0106, lng: 28.9681 }),
+    ).toBe("Estambul");
+    expect(
+      nearestZoneFromPosition({ lat: 38.6428, lng: 34.8305 }),
     ).toBe("Capadocia");
-    expect(
-      suggestZoneFromPosition(
-        { lat: 41.0065, lng: 28.9784 },
-        "Estambul",
-        trip.meetingPoint,
-      ),
-    ).toBeNull();
   });
 });

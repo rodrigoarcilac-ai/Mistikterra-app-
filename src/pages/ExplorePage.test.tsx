@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { AuthProvider } from "../lib/AuthProvider";
+import { DeviceOriginProvider } from "../lib/DeviceOriginProvider";
 import { TripProvider } from "../lib/TripProvider";
 import ExplorePage from "./ExplorePage";
 
@@ -11,7 +11,9 @@ function wrap(ui: ReactNode) {
   return render(
     <MemoryRouter>
       <AuthProvider>
-        <TripProvider>{ui}</TripProvider>
+        <TripProvider>
+          <DeviceOriginProvider>{ui}</DeviceOriginProvider>
+        </TripProvider>
       </AuthProvider>
     </MemoryRouter>,
   );
@@ -27,31 +29,39 @@ function listPlaceNames() {
 function mockGeolocation(options: {
   success?: { lat: number; lng: number };
   errorCode?: number;
+  delayMs?: number;
 }) {
   const getCurrentPosition = vi.fn(
     (success: PositionCallback, error?: PositionErrorCallback) => {
-      if (options.success) {
-        success({
-          coords: {
-            latitude: options.success.lat,
-            longitude: options.success.lng,
-            accuracy: 10,
-            altitude: null,
-            altitudeAccuracy: null,
-            heading: null,
-            speed: null,
-          },
-          timestamp: Date.now(),
-        } as GeolocationPosition);
-        return;
+      const run = () => {
+        if (options.success) {
+          success({
+            coords: {
+              latitude: options.success.lat,
+              longitude: options.success.lng,
+              accuracy: 10,
+              altitude: null,
+              altitudeAccuracy: null,
+              heading: null,
+              speed: null,
+            },
+            timestamp: Date.now(),
+          } as GeolocationPosition);
+          return;
+        }
+        error?.({
+          code: options.errorCode ?? 1,
+          message: "denied",
+          PERMISSION_DENIED: 1,
+          POSITION_UNAVAILABLE: 2,
+          TIMEOUT: 3,
+        } as GeolocationPositionError);
+      };
+      if (options.delayMs) {
+        setTimeout(run, options.delayMs);
+      } else {
+        run();
       }
-      error?.({
-        code: options.errorCode ?? 1,
-        message: "denied",
-        PERMISSION_DENIED: 1,
-        POSITION_UNAVAILABLE: 2,
-        TIMEOUT: 3,
-      } as GeolocationPositionError);
     },
   );
 
@@ -79,69 +89,50 @@ describe("ExplorePage GPS origin", () => {
     });
   });
 
-  it("keeps the hotel as origin until the traveler opts in", () => {
-    wrap(<ExplorePage />);
-
-    expect(
-      screen.getByRole("button", { name: /^usar mi ubicación$/i }),
-    ).toBeInTheDocument();
-    expect(screen.getAllByText(/hotel sura design/i).length).toBeGreaterThan(0);
-    expect(listPlaceNames()[0]).toBe("Hammam Çemberlitaş");
-  });
-
-  it("re-ranks places from a GPS pin instead of Hotel Sura Design", async () => {
-    const user = userEvent.setup();
-    mockGeolocation({ success: { lat: 41.0106, lng: 28.9681 } });
-    wrap(<ExplorePage />);
-
-    expect(listPlaceNames()[0]).toBe("Hammam Çemberlitaş");
-
-    await user.click(screen.getByRole("button", { name: /^usar mi ubicación$/i }));
-
-    expect(listPlaceNames()[0]).toBe("Gran Bazar");
-    expect(screen.getAllByText(/tu ubicación/i).length).toBeGreaterThan(0);
-    expect(
-      screen.queryByRole("button", { name: /^usar mi ubicación$/i }),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /dejar de usar mi ubicación/i }),
-    ).toBeInTheDocument();
-  });
-
-  it("stays on the hotel and shows a notice when GPS is denied", async () => {
-    const user = userEvent.setup();
+  it("hides the filter menu and hotel list until GPS is available", () => {
     mockGeolocation({ errorCode: 1 });
     wrap(<ExplorePage />);
 
-    await user.click(screen.getByRole("button", { name: /^usar mi ubicación$/i }));
-
     expect(
-      screen.getByRole("status"),
-    ).toHaveTextContent(/no se pudo leer tu ubicación; seguimos desde el hotel/i);
-    expect(screen.getAllByText(/hotel sura design/i).length).toBeGreaterThan(0);
-    expect(listPlaceNames()[0]).toBe("Hammam Çemberlitaş");
+      screen.queryByRole("button", { name: /^usar mi ubicación$/i }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /estambul/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /todos/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/hotel sura design/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/hammam/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      /activa la ubicación para ver lugares cerca de ti/i,
+    );
   });
 
-  it("suggests another city without switching the list automatically", async () => {
-    const user = userEvent.setup();
+  it("ranks the nearest city automatically from a GPS pin", () => {
+    mockGeolocation({ success: { lat: 41.0106, lng: 28.9681 } });
+    wrap(<ExplorePage />);
+
+    expect(listPlaceNames()[0]).toBe("Gran Bazar");
+    expect(screen.getAllByText(/tu ubicación/i).length).toBeGreaterThan(0);
+    expect(screen.queryByRole("button", { name: /^usar mi ubicación$/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /estambul/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/hotel sura design/i)).not.toBeInTheDocument();
+  });
+
+  it("switches the list to Capadocia when the pin is there", () => {
     mockGeolocation({ success: { lat: 38.6428, lng: 34.8305 } });
     wrap(<ExplorePage />);
 
-    await user.click(screen.getByRole("button", { name: /^usar mi ubicación$/i }));
-
-    expect(screen.getByText(/parece que estás en capadocia/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /estambul/i, pressed: true }),
-    ).toBeInTheDocument();
-    expect(listPlaceNames()[0]).toBe("Hammam Çemberlitaş");
-
-    await user.click(
-      screen.getByRole("button", { name: /ver lugares de capadocia/i }),
-    );
-
-    expect(
-      screen.getByRole("button", { name: /capadocia/i, pressed: true }),
-    ).toBeInTheDocument();
     expect(listPlaceNames()[0]).toBe("Atardecer en Göreme");
+    expect(screen.queryByText(/hammam/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/parece que estás en/i)).not.toBeInTheDocument();
+  });
+
+  it("shows a reading status before coordinates arrive", () => {
+    mockGeolocation({
+      success: { lat: 41.0106, lng: 28.9681 },
+      delayMs: 50_000,
+    });
+    wrap(<ExplorePage />);
+
+    expect(screen.getByRole("status")).toHaveTextContent(/leyendo tu ubicación/i);
+    expect(screen.queryByRole("list")).not.toBeInTheDocument();
   });
 });

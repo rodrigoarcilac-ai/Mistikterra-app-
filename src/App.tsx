@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import type { ReactNode } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./lib/AuthProvider";
+import { DeviceOriginProvider } from "./lib/DeviceOriginProvider";
 import { TripProvider } from "./lib/TripProvider";
 import { useAuth } from "./lib/auth";
 import Layout from "./components/Layout";
@@ -48,7 +49,9 @@ function AppRoutes() {
       <Route
         element={
           <RequireAuth>
-            <Layout />
+            <DeviceOriginProvider>
+              <Layout />
+            </DeviceOriginProvider>
           </RequireAuth>
         }
       >

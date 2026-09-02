@@ -31,9 +31,6 @@ export const ZONE_ORIGINS: Record<string, MapOrigin> = {
 /** Distancia a pie razonable para “Cerca”. Más allá es traslado. */
 export const WALKABLE_METERS = 2500;
 
-/** Si el GPS está más lejos que esto del hotel activo, se puede sugerir otra ciudad. */
-export const ZONE_HINT_METERS = 50_000;
-
 export function isWalkableDistance(meters: number): boolean {
   return meters <= WALKABLE_METERS;
 }
@@ -133,29 +130,17 @@ export function sortByNearest(
   );
 }
 
-/** Si el GPS está claramente en otra ciudad del programa, sugerir cambiar el chip (sin auto-cambiar). */
-export function suggestZoneFromPosition(
-  position: LatLng,
-  activeZone: string,
-  meeting: MeetingPoint,
-): string | null {
-  const distanceFromCurrent = distanceMeters(
-    originForZone(activeZone, meeting),
-    position,
-  );
-  if (distanceFromCurrent < ZONE_HINT_METERS) return null;
-
-  let nearest: string | null = null;
+/** Ciudad del programa cuyo hotel está más cerca del pin (sin chips). */
+export function nearestZoneFromPosition(position: LatLng): string {
+  let nearest = "Estambul";
   let nearestMeters = Number.POSITIVE_INFINITY;
   for (const [zone, origin] of Object.entries(ZONE_ORIGINS)) {
-    if (zone === activeZone) continue;
     const meters = distanceMeters(origin, position);
     if (meters < nearestMeters) {
       nearest = zone;
       nearestMeters = meters;
     }
   }
-  if (!nearest || nearestMeters >= ZONE_HINT_METERS) return null;
   return nearest;
 }
 
