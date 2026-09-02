@@ -27,33 +27,30 @@ export default function MeetingPointCard() {
 
       <CountdownTimer targetIso={meetingPoint.datetime} />
 
-      <p className="mt-5 text-lg text-marfil">{meetingPoint.address}</p>
+      <a
+        href={meetingPoint.mapUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-5 inline-flex min-h-12 items-center text-lg text-marfil underline-offset-4 hover:text-oro hover:underline"
+      >
+        {meetingPoint.address}
+      </a>
       {meetingPoint.note ? (
         <p className="mt-1 text-base text-marfil-tenue">{meetingPoint.note}</p>
       ) : null}
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        <a
-          href={meetingPoint.mapUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-oro px-5 py-3 text-base font-bold uppercase tracking-[0.1em] text-noche shadow-lg shadow-black/30 transition hover:bg-oro-suave focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oro"
-        >
-          Cómo llegar
-        </a>
-        <button
-          type="button"
-          onClick={() => user && toggleConfirmation(user.id)}
-          aria-pressed={confirmed}
-          className={
-            confirmed
-              ? "flex min-h-12 items-center justify-center gap-2 rounded-full bg-oro/15 px-5 py-3 text-base font-bold uppercase tracking-[0.1em] text-oro ring-2 ring-inset ring-oro/70 transition"
-              : "flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-oro px-5 py-3 text-base font-bold uppercase tracking-[0.1em] text-oro transition hover:bg-oro/10"
-          }
-        >
-          {confirmed ? "Asistencia confirmada ✓" : "Confirmar asistencia"}
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={() => user && toggleConfirmation(user.id)}
+        aria-pressed={confirmed}
+        className={
+          confirmed
+            ? "mt-5 flex min-h-12 w-full items-center justify-center rounded-full bg-oro/15 px-5 py-3 text-base font-bold uppercase tracking-[0.1em] text-oro ring-2 ring-inset ring-oro/70 transition"
+            : "mt-5 flex min-h-12 w-full items-center justify-center rounded-full border-2 border-oro px-5 py-3 text-base font-bold uppercase tracking-[0.1em] text-oro transition hover:bg-oro/10"
+        }
+      >
+        {confirmed ? "Asistencia confirmada ✓" : "Confirmar asistencia"}
+      </button>
     </section>
   );
 }
