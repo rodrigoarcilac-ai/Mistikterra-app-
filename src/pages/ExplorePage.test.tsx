@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { AuthProvider } from "../lib/AuthProvider";
 import { DeviceOriginProvider } from "../lib/DeviceOriginProvider";
 import { TripProvider } from "../lib/TripProvider";
@@ -17,13 +18,6 @@ function wrap(ui: ReactNode) {
       </AuthProvider>
     </MemoryRouter>,
   );
-}
-
-function listPlaceNames() {
-  const list = screen.getByRole("list");
-  return within(list)
-    .getAllByRole("heading")
-    .map((heading) => heading.textContent);
 }
 
 function mockGeolocation(options: {
@@ -89,40 +83,43 @@ describe("ExplorePage GPS origin", () => {
     });
   });
 
-  it("hides the filter menu and hotel list until GPS is available", () => {
+  it("shows the trip map and city tables when GPS is denied", () => {
     mockGeolocation({ errorCode: 1 });
     wrap(<ExplorePage />);
 
     expect(
+      screen.getByTitle(/recorrido mar de imperios/i),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Estambul" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Galeyan" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Revithia" })).toBeInTheDocument();
+    expect(screen.queryByText(/hammam/i)).not.toBeInTheDocument();
+    expect(
       screen.queryByRole("button", { name: /^usar mi ubicación$/i }),
     ).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /estambul/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /todos/i })).not.toBeInTheDocument();
-    expect(screen.queryByText(/hotel sura design/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/hammam/i)).not.toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent(
-      /activa la ubicación para ver lugares cerca de ti/i,
-    );
+    expect(screen.getByText(/sin tu ubicación, las mesas van por ciudad/i)).toBeInTheDocument();
   });
 
-  it("ranks the nearest city automatically from a GPS pin", () => {
+  it("lists Istanbul tables from a GPS pin and hides Cappadocia", () => {
     mockGeolocation({ success: { lat: 41.0106, lng: 28.9681 } });
     wrap(<ExplorePage />);
 
-    expect(listPlaceNames()[0]).toBe("Gran Bazar");
-    expect(screen.getAllByText(/tu ubicación/i).length).toBeGreaterThan(0);
-    expect(screen.queryByRole("button", { name: /^usar mi ubicación$/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /mesas en estambul/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Galeyan" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Deraliye Terrace" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Revithia" })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Gran Bazar" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /estambul/i })).not.toBeInTheDocument();
-    expect(screen.queryByText(/hotel sura design/i)).not.toBeInTheDocument();
   });
 
-  it("switches the list to Capadocia when the pin is there", () => {
+  it("switches restaurants to Capadocia when the pin is there", () => {
     mockGeolocation({ success: { lat: 38.6428, lng: 34.8305 } });
     wrap(<ExplorePage />);
 
-    expect(listPlaceNames()[0]).toBe("Atardecer en Göreme");
-    expect(screen.queryByText(/hammam/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/parece que estás en/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /mesas en capadocia/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Tasula" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Galeyan" })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Atardecer en Göreme" })).toBeInTheDocument();
   });
 
   it("shows a reading status before coordinates arrive", () => {
@@ -133,6 +130,17 @@ describe("ExplorePage GPS origin", () => {
     wrap(<ExplorePage />);
 
     expect(screen.getByRole("status")).toHaveTextContent(/leyendo tu ubicación/i);
-    expect(screen.queryByRole("list")).not.toBeInTheDocument();
+    expect(screen.getByTitle(/recorrido mar de imperios/i)).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Galeyan" })).not.toBeInTheDocument();
+  });
+
+  it("does not pretend a taxi restaurant is a walking route", async () => {
+    const user = userEvent.setup();
+    mockGeolocation({ success: { lat: 41.0065, lng: 28.9784 } });
+    wrap(<ExplorePage />);
+
+    await user.click(screen.getByRole("button", { name: /tuğra/i }));
+    expect(screen.getAllByText(/20 min en taxi/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/no es un trayecto a pie/i)).toBeInTheDocument();
   });
 });

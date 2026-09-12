@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { googleMapEmbedSrc, googleWalkingLink } from "./googleMaps";
+import { googleMapEmbedSrc, googleTripRouteEmbed, googleTripRouteLink, googleWalkingLink } from "./googleMaps";
 
 const fushimi = { lat: 34.96714, lng: 135.77267, label: "Fushimi Inari" };
 const filosofos = { lat: 35.0264, lng: 135.7958, label: "Camino de los Filósofos" };
@@ -29,5 +29,25 @@ describe("googleWalkingLink", () => {
     expect(href).toContain("https://www.google.com/maps/dir/?");
     expect(href).toContain("travelmode=walking");
     expect(href).toContain("hl=es");
+  });
+});
+
+describe("google trip route", () => {
+  it("embeds a multi-stop dir without an API key", () => {
+    const stops = [
+      { lat: 41.0065, lng: 28.9784, label: "Estambul" },
+      { lat: 38.6428, lng: 34.8305, label: "Capadocia" },
+      { lat: 37.9758, lng: 23.7354, label: "Atenas" },
+    ];
+    const src = googleTripRouteEmbed(stops);
+    expect(src).toContain("https://www.google.com/maps/dir/");
+    expect(src).toContain("41.0065,28.9784");
+    expect(src).toContain("38.6428,34.8305");
+    expect(src).toContain("hl=es");
+    expect(src).toContain("output=embed");
+
+    const href = googleTripRouteLink(stops);
+    expect(href).toContain("api=1");
+    expect(href).toContain("waypoints=");
   });
 });

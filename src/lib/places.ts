@@ -28,6 +28,14 @@ export const ZONE_ORIGINS: Record<string, MapOrigin> = {
   Salónica: { lat: 40.6388, lng: 22.9478, label: "Hagios Demetrios" },
 };
 
+export const TRIP_ZONE_ORDER = [
+  "Estambul",
+  "Capadocia",
+  "Atenas",
+  "Meteora",
+  "Salónica",
+] as const;
+
 /** Distancia a pie razonable para “Cerca”. Más allá es traslado. */
 export const WALKABLE_METERS = 2500;
 
@@ -121,10 +129,10 @@ export function originForZone(zone: string, meeting: MeetingPoint): MapOrigin {
   return { ...ZONE_ORIGINS.Estambul };
 }
 
-export function sortByNearest(
-  places: Recommendation[],
+export function sortByNearest<T extends LatLng>(
+  places: T[],
   origin: LatLng,
-): Recommendation[] {
+): T[] {
   return [...places].sort(
     (a, b) => distanceMeters(origin, a) - distanceMeters(origin, b),
   );

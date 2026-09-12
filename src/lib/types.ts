@@ -93,6 +93,24 @@ export type Recommendation = {
   nearDayId?: string;
 };
 
+export type ReservationNeed = "indispensable" | "recomendado" | "no_necesario";
+
+/** Mesas del programa (PDF Restaurantes Mar de Imperios). */
+export type Restaurant = {
+  id: string;
+  name: string;
+  zone: string;
+  hours: string;
+  howFar: string;
+  style: string;
+  reservation: ReservationNeed;
+  reservationNote?: string;
+  website?: string;
+  mapUrl: string;
+  lat: number;
+  lng: number;
+};
+
 export type Trip = {
   id: string;
   name: string;
@@ -104,6 +122,7 @@ export type Trip = {
   meetingPoint: MeetingPoint;
   itinerary: ItineraryDay[];
   recommendations: Recommendation[];
+  restaurants: Restaurant[];
   alerts: Alert[];
   announcements: Announcement[];
   assistance: Assistance;

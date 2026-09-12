@@ -33,6 +33,27 @@ export function googleMapEmbedSrc(
   return `https://www.google.com/maps?${params.toString()}`;
 }
 
+/** Recorrido del viaje entre paradas (hoteles), sin API key. */
+export function googleTripRouteEmbed(stops: MapPoint[]): string {
+  const path = stops.map(pointQuery).join("/");
+  return `https://www.google.com/maps/dir/${path}?hl=es&output=embed`;
+}
+
+export function googleTripRouteLink(stops: MapPoint[]): string {
+  if (stops.length === 0) return "https://www.google.com/maps?hl=es";
+  const origin = pointQuery(stops[0]);
+  const destination = pointQuery(stops[stops.length - 1]);
+  const waypoints = stops.slice(1, -1).map(pointQuery).join("|");
+  const params = new URLSearchParams({
+    api: "1",
+    origin,
+    destination,
+    hl: "es",
+  });
+  if (waypoints) params.set("waypoints", waypoints);
+  return `https://www.google.com/maps/dir/?${params.toString()}`;
+}
+
 /** Enlace oficial para abrir la ruta a pie en Google Maps. */
 export function googleWalkingLink(origin: MapPoint, destination: MapPoint): string {
   const params = new URLSearchParams({

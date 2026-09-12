@@ -63,6 +63,6 @@ describe("TripProvider", () => {
     act(() => {
       result.current.postAnnouncement({ title: "Aviso", body: "Cuerpo" });
     });
-    expect(localStorage.getItem("mt.trip.v8")).toContain("Aviso");
+    expect(localStorage.getItem("mt.trip.v9")).toContain("Aviso");
   });
 });

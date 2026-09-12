@@ -1,4 +1,5 @@
 import type { ItineraryDay, Recommendation, Trip } from "./types";
+import { seedRestaurants } from "./restaurantData";
 
 /** Hora local de Turquía/Grecia en esas fechas (EEST, UTC+3). */
 function at(stamp: string): string {
@@ -882,6 +883,7 @@ export function createSeedTrip(): Trip {
         nearDayId: "day_13",
       }),
     ],
+    restaurants: seedRestaurants(),
     alerts: [],
     announcements: [
       {
