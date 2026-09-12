@@ -35,8 +35,17 @@ export function googleMapEmbedSrc(
 
 /** Recorrido del viaje entre paradas (hoteles), sin API key. */
 export function googleTripRouteEmbed(stops: MapPoint[]): string {
-  const path = stops.map(pointQuery).join("/");
-  return `https://www.google.com/maps/dir/${path}?hl=es&output=embed`;
+  if (stops.length === 0) {
+    return "https://www.google.com/maps?hl=es&output=embed";
+  }
+  const origin = pointQuery(stops[0]);
+  const rest = stops.slice(1).map((stop) => encodeURIComponent(pointQuery(stop)));
+  const params = new URLSearchParams({
+    hl: "es",
+    t: "m",
+    output: "embed",
+  });
+  return `https://www.google.com/maps?saddr=${encodeURIComponent(origin)}&daddr=${rest.join("+to:")}&${params.toString()}`;
 }
 
 export function googleTripRouteLink(stops: MapPoint[]): string {

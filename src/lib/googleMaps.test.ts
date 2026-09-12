@@ -40,9 +40,11 @@ describe("google trip route", () => {
       { lat: 37.9758, lng: 23.7354, label: "Atenas" },
     ];
     const src = googleTripRouteEmbed(stops);
-    expect(src).toContain("https://www.google.com/maps/dir/");
-    expect(src).toContain("41.0065,28.9784");
-    expect(src).toContain("38.6428,34.8305");
+    expect(src.startsWith("https://www.google.com/maps?")).toBe(true);
+    expect(src).toContain("saddr=");
+    expect(src).toContain("41.0065");
+    expect(src).toContain("38.6428");
+    expect(src).toContain("to:");
     expect(src).toContain("hl=es");
     expect(src).toContain("output=embed");
 
