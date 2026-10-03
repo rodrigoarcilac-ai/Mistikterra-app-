@@ -10,6 +10,20 @@ export type User = {
   method: AuthMethod;
 };
 
+export type TravelDocKind = "passport" | "visa";
+
+export type TravelDocFile = {
+  name: string;
+  type: string;
+  dataUrl: string;
+  updatedAt: string;
+};
+
+export type TravelDocs = {
+  passport?: TravelDocFile;
+  visa?: TravelDocFile;
+};
+
 export type MeetingPoint = {
   title: string;
   address: string;

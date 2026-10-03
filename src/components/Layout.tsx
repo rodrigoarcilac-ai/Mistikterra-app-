@@ -17,7 +17,7 @@ const BASE_NAV: NavItem[] = [
 const GUIDE_NAV: NavItem = { to: "/guia", label: "Panel", icon: "✦" };
 
 export default function Layout() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
   const reduce = useReducedMotion();
   const isHome = location.pathname === "/";
@@ -42,21 +42,20 @@ export default function Layout() {
             <BrandLogo to="/" />
             <div className="flex items-center gap-3">
               {user ? (
-                <>
-                  <div className="text-right">
-                    <p className="text-base text-marfil">{user.name}</p>
-                    <p className="text-xs uppercase tracking-[0.2em] text-marfil-tenue">
-                      {user.role === "guia" ? "Anfitriona" : "Viajero"}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={logout}
-                    className="flex min-h-12 items-center rounded-full border border-borde px-3 text-sm text-marfil-tenue transition hover:border-oro/50 hover:text-oro"
-                  >
-                    Salir
-                  </button>
-                </>
+                <NavLink
+                  to="/cuenta"
+                  aria-label="Mi cuenta"
+                  className={({ isActive }) =>
+                    `flex min-h-12 flex-col items-end justify-center text-right ${
+                      isActive ? "text-oro" : "text-marfil"
+                    }`
+                  }
+                >
+                  <span className="text-base">{user.name}</span>
+                  <span className="text-xs uppercase tracking-[0.2em] text-marfil-tenue">
+                    Mi cuenta
+                  </span>
+                </NavLink>
               ) : null}
             </div>
           </header>

@@ -6,9 +6,11 @@ import { DeviceOriginProvider } from "./lib/DeviceOriginProvider";
 import { TripProvider } from "./lib/TripProvider";
 import { useAuth } from "./lib/auth";
 import Layout from "./components/Layout";
+import SplashScreen from "./components/SplashScreen";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import ItineraryPage from "./pages/ItineraryPage";
+import AccountPage from "./pages/AccountPage";
 import GuidePanelPage from "./pages/GuidePanelPage";
 
 const ExplorePage = lazy(() => import("./pages/ExplorePage"));
@@ -56,6 +58,7 @@ function AppRoutes() {
         }
       >
         <Route path="/" element={<HomePage />} />
+        <Route path="/cuenta" element={<AccountPage />} />
         <Route path="/itinerario" element={<ItineraryPage />} />
         <Route
           path="/cerca"
@@ -84,7 +87,9 @@ export default function App() {
     <AuthProvider>
       <TripProvider>
         <BrowserRouter>
-          <AppRoutes />
+          <SplashScreen>
+            <AppRoutes />
+          </SplashScreen>
         </BrowserRouter>
       </TripProvider>
     </AuthProvider>
